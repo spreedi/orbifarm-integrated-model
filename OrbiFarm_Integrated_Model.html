@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OrbiFarm® Integrated Business Model</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --orbi-green: #2d8a4e;
+  --orbi-dark: #1a2332;
+  --orbi-light: #f0f4f3;
+  --orbi-accent: #4ecdc4;
+  --orbi-blue: #3498db;
+  --orbi-red: #e74c3c;
+  --orbi-orange: #f39c12;
+  --orbi-purple: #9b59b6;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--orbi-light); color: var(--orbi-dark); line-height: 1.5; }
+header { background: linear-gradient(135deg, var(--orbi-dark) 0%, #2c3e50 100%); color: white; padding: 18px 30px; display: flex; align-items: center; gap: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+header .logo { background: var(--orbi-green); border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: white; }
+header h1 { font-size: 22px; font-weight: 600; }
+header h1 span { color: var(--orbi-accent); }
+header .subtitle { font-size: 13px; opacity: 0.7; margin-left: auto; }
+.container { max-width: 1700px; margin: 0 auto; padding: 20px; display: grid; grid-template-columns: 420px 1fr; gap: 20px; }
+.input-panel { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); max-height: calc(100vh - 100px); overflow-y: auto; }
+.input-panel h2 { font-size: 16px; color: var(--orbi-green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--orbi-light); }
+.input-section { margin-bottom: 16px; padding: 12px; border-radius: 10px; background: #f9fbfa; border-left: 3px solid var(--orbi-green); }
+.input-section.farm-ops { border-left-color: var(--orbi-purple); }
+.input-section h3 { font-size: 13px; font-weight: 600; color: var(--orbi-dark); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.field { display: flex; align-items: center; margin-bottom: 6px; gap: 8px; }
+.field label { font-size: 12px; color: #555; flex: 1; min-width: 0; }
+.field input, .field select { width: 120px; padding: 5px 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; text-align: right; background: white; transition: border-color 0.2s; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--orbi-green); box-shadow: 0 0 0 3px rgba(45,138,78,0.12); }
+.field .unit { font-size: 11px; color: #888; width: 50px; text-align: left; }
+.results-panel { display: flex; flex-direction: column; gap: 20px; }
+.tab-bar { display: flex; gap: 4px; background: white; border-radius: 12px; padding: 6px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); flex-wrap: wrap; }
+.tab-bar button { padding: 10px 14px; border: none; background: transparent; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; color: #666; transition: all 0.2s; }
+.tab-bar button.active { background: linear-gradient(135deg, var(--orbi-green), #27ae60); color: white; }
+.tab-bar button:hover:not(.active) { background: var(--orbi-light); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.kpi-card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 4px solid var(--orbi-green); }
+.kpi-card.highlight { border-left-color: var(--orbi-accent); background: linear-gradient(135deg, rgba(78,205,196,0.05), white); }
+.kpi-card.warn { border-left-color: var(--orbi-orange); }
+.kpi-card.negative { border-left-color: var(--orbi-red); }
+.kpi-card.purple { border-left-color: var(--orbi-purple); background: linear-gradient(135deg, rgba(155,89,182,0.05), white); }
+.kpi-card .label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+.kpi-card .value { font-size: 22px; font-weight: 700; color: var(--orbi-dark); margin: 4px 0; }
+.kpi-card .sub { font-size: 11px; color: #aaa; }
+.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+.chart-box { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.chart-box h3 { font-size: 14px; color: var(--orbi-dark); margin-bottom: 12px; }
+.chart-box canvas { width: 100% !important; }
+.table-wrap { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow-x: auto; }
+.table-wrap h3 { font-size: 14px; color: var(--orbi-dark); margin-bottom: 12px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 12px; }
+table.data th { background: var(--orbi-dark); color: white; padding: 8px 12px; text-align: right; font-weight: 500; position: sticky; top: 0; }
+table.data th:first-child { text-align: left; border-radius: 8px 0 0 0; }
+table.data th:last-child { border-radius: 0 8px 0 0; }
+table.data td { padding: 6px 12px; text-align: right; border-bottom: 1px solid #eee; }
+table.data td:first-child { text-align: left; font-weight: 500; }
+table.data tr:hover { background: rgba(45,138,78,0.04); }
+table.data tr.section-header td { font-weight: 700; background: #f0f4f3; border-top: 2px solid var(--orbi-green); }
+table.data tr.subtotal td { font-weight: 600; border-top: 1px solid #ccc; }
+table.data tr.total td { font-weight: 700; background: #e8f5e9; border-top: 2px solid var(--orbi-green); }
+.neg { color: var(--orbi-red); }
+.pos { color: var(--orbi-green); }
+.scenario-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-left: 8px; }
+.scenario-badge.base { background: #e8f5e9; color: var(--orbi-green); }
+.scenario-badge.bull { background: #e3f2fd; color: var(--orbi-blue); }
+.scenario-badge.bear { background: #fce4ec; color: var(--orbi-red); }
+.btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.btn { padding: 8px 16px; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--orbi-green); color: white; }
+.btn-primary:hover { background: #27ae60; }
+.btn-secondary { background: var(--orbi-light); color: var(--orbi-dark); }
+.btn-secondary:hover { background: #dce3e0; }
+.btn-purple { background: var(--orbi-purple); color: white; }
+.btn-purple:hover { background: #8e44ad; }
+.btn-danger { background: var(--orbi-red); color: white; font-size: 11px; padding: 4px 10px; }
+.btn-danger:hover { background: #c0392b; }
+.valuation-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+.val-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); text-align: center; }
+.val-card h4 { font-size: 12px; color: #888; text-transform: uppercase; margin-bottom: 8px; }
+.val-card .val-value { font-size: 28px; font-weight: 700; color: var(--orbi-dark); }
+.val-card .val-sub { font-size: 12px; color: #aaa; margin-top: 4px; }
+.val-card.primary { border: 2px solid var(--orbi-green); }
+.val-card.primary .val-value { color: var(--orbi-green); }
+
+/* Farm Card Styles */
+.farm-cards { display: flex; flex-direction: column; gap: 10px; }
+.farm-card { background: white; border: 1px solid #e0d4f0; border-radius: 10px; padding: 10px 12px; position: relative; }
+.farm-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.farm-card-header input[type="text"] { flex: 1; border: 1px solid #ddd; border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 600; color: var(--orbi-dark); }
+.farm-card-header .farm-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: var(--orbi-purple); color: white; white-space: nowrap; }
+.farm-card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+.farm-card-row .mini-field { display: flex; align-items: center; gap: 4px; }
+.farm-card-row .mini-field label { font-size: 10px; color: #666; flex: 1; }
+.farm-card-row .mini-field input, .farm-card-row .mini-field select { width: 80px; padding: 3px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; text-align: right; }
+.farm-card-row .mini-field select { text-align: left; width: 100%; }
+.farm-detail-toggle { font-size: 11px; color: var(--orbi-purple); cursor: pointer; user-select: none; margin-top: 4px; display: inline-block; }
+.farm-detail-toggle:hover { text-decoration: underline; }
+.farm-details { display: none; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e0d4f0; }
+.farm-details.open { display: block; }
+.farm-details .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.farm-details .detail-grid .mini-field { display: flex; align-items: center; gap: 3px; }
+.farm-details .detail-grid .mini-field label { font-size: 9px; color: #888; flex: 1; }
+.farm-details .detail-grid .mini-field input { width: 65px; padding: 2px 4px; border: 1px solid #e0e0e0; border-radius: 3px; font-size: 10px; text-align: right; }
+.farm-card .delete-btn { position: absolute; top: 8px; right: 8px; background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; line-height: 1; }
+.farm-card .delete-btn:hover { color: var(--orbi-red); }
+.farm-summary { font-size: 10px; color: #888; margin-top: 4px; padding: 4px 8px; background: #f9f5ff; border-radius: 6px; }
+.farm-summary strong { color: var(--orbi-purple); }
+
+/* Comparison Table */
+.comparison-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.comparison-table th { background: var(--orbi-dark); color: white; padding: 8px 10px; text-align: right; font-weight: 500; position: sticky; top: 0; white-space: nowrap; }
+.comparison-table th:first-child { text-align: left; }
+.comparison-table td { padding: 6px 10px; text-align: right; border-bottom: 1px solid #eee; }
+.comparison-table td:first-child { text-align: left; font-weight: 500; }
+.comparison-table tr:hover { background: rgba(45,138,78,0.04); }
+
+/* Quick actions bar */
+.quick-actions { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.quick-actions input { width: 60px; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 11px; text-align: center; }
+
+/* Password Protection */
+#pw-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--orbi-dark) 0%, #2c3e50 100%); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+#pw-box { background: white; border-radius: 16px; padding: 48px 40px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 420px; width: 90%; }
+#pw-box .pw-logo { width: 64px; height: 64px; background: var(--orbi-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: white; margin: 0 auto 20px; }
+#pw-box h2 { color: var(--orbi-dark); font-size: 22px; margin-bottom: 6px; }
+#pw-box p { color: #666; font-size: 13px; margin-bottom: 24px; }
+#pw-input { width: 100%; padding: 12px 16px; border: 2px solid #ddd; border-radius: 8px; font-size: 15px; outline: none; transition: border-color 0.2s; }
+#pw-input:focus { border-color: var(--orbi-green); }
+#pw-input.pw-error { border-color: var(--orbi-red); animation: shake 0.4s; }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+#pw-btn { width: 100%; padding: 12px; margin-top: 16px; background: var(--orbi-green); color: white; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+#pw-btn:hover { background: #236b3d; }
+#pw-error-msg { color: var(--orbi-red); font-size: 13px; margin-top: 10px; display: none; }
+.app-hidden { display: none !important; }
+
+@media (max-width: 1100px) {
+  .container { grid-template-columns: 1fr; }
+  .input-panel { max-height: none; }
+}
+</style>
+</head>
+<body>
+<!-- Password Protection -->
+<div id="pw-overlay">
+  <div id="pw-box">
+    <div class="pw-logo">O</div>
+    <h2>OrbiFarm® Integrated Model</h2>
+    <p>This document is confidential. Please enter the access code.</p>
+    <input type="password" id="pw-input" placeholder="Access Code" autocomplete="off" autofocus>
+    <button id="pw-btn" onclick="checkPassword()">Unlock</button>
+    <div id="pw-error-msg">Incorrect access code. Please try again.</div>
+  </div>
+</div>
+<div id="app-content" class="app-hidden">
+<header>
+  <div class="logo">O</div>
+  <div>
+    <h1>OrbiFarm<span>®</span> Integrated Business Model</h1>
+    <div style="font-size:12px;opacity:0.6">GmbH P&L + Farm Operations &middot; 7-Year Plan</div>
+  </div>
+  <div class="subtitle">Version 1.0 &middot; Confidential</div>
+</header>
+
+<div class="container">
+  <!-- INPUT PANEL -->
+  <div class="input-panel">
+    <h2>Model Assumptions</h2>
+
+    <!-- FARM OPERATIONS (primary input) -->
+    <div class="input-section farm-ops">
+      <h3 style="color:var(--orbi-purple);">Farm Operations</h3>
+      <div class="quick-actions">
+        <button class="btn btn-purple" onclick="addFarm()" style="font-size:11px;padding:5px 12px;">+ Add Farm</button>
+        <span style="font-size:10px;color:#888;">Set all shares:</span>
+        <input id="globalShare" type="number" value="51" min="0" max="100" style="width:50px;">
+        <button class="btn btn-secondary" onclick="setAllShares()" style="font-size:10px;padding:4px 8px;">Apply</button>
+      </div>
+      <div id="farmCards" class="farm-cards"></div>
+    </div>
+
+    <!-- Scenario -->
+    <div class="input-section">
+      <h3>Scenario</h3>
+      <div class="field">
+        <label>Active Scenario</label>
+        <select id="scenario" onchange="recalculate()">
+          <option value="base">Base Case</option>
+          <option value="bull">Bull Case</option>
+          <option value="bear">Bear Case</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="input-section">
+      <h3>Pricing</h3>
+      <div style="font-size:10px;color:#888;margin-bottom:6px;">OrbiFarm GmbH charges for construction, licensing & maintenance</div>
+      <div class="field"><label>Licensing Fee</label><input id="licenseFee" type="number" value="10" step="1" onchange="recalculate()"><span class="unit">% of crop rev</span></div>
+      <div class="field"><label>Maintenance Rate</label><input id="maintRate" type="number" value="0.8" step="0.1" onchange="recalculate()"><span class="unit">EUR/sqm/yr</span></div>
+    </div>
+
+    <!-- COGS -->
+    <div class="input-section">
+      <h3>Cost Structure (COGS)</h3>
+      <div class="field"><label>Construction Costs</label><input id="hwCostRate" type="number" value="80" step="1" onchange="recalculate()"><span class="unit">% Constr.</span></div>
+      <div class="field"><label>Discounts</label><input id="discountRate" type="number" value="5" step="0.5" onchange="recalculate()"><span class="unit">% Constr.</span></div>
+      <div class="field"><label>Royalties Fraunhofer</label><input id="royaltyRate" type="number" value="1.5" step="0.1" onchange="recalculate()"><span class="unit">% Constr.</span></div>
+      <div class="field"><label>Maintenance Costs</label><input id="maintCostRate" type="number" value="80" step="1" onchange="recalculate()"><span class="unit">% Maint.</span></div>
+    </div>
+
+    <!-- OpEx -->
+    <div class="input-section">
+      <h3>GmbH OpEx (% of Gross Margin)</h3>
+      <div class="field"><label>Accounting</label><input id="opexAccounting" type="number" value="2" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Consulting / Legal</label><input id="opexConsulting" type="number" value="5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Insurance & Dues</label><input id="opexInsurance" type="number" value="3.5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Product Development</label><input id="opexProdDev" type="number" value="5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Patents / IP</label><input id="opexPatents" type="number" value="1" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Marketing & PR</label><input id="opexMarketing" type="number" value="2" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Communication</label><input id="opexComm" type="number" value="5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Office Rental</label><input id="opexOffice" type="number" value="0.5" step="0.1" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Travel & Expenses</label><input id="opexTravel" type="number" value="5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Other Costs</label><input id="opexOther" type="number" value="3.5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+    </div>
+
+    <!-- Personnel -->
+    <div class="input-section">
+      <h3>GmbH Personnel (T EUR / month)</h3>
+      <div class="field"><label>FY26</label><input id="persFY26" type="number" value="50" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY27</label><input id="persFY27" type="number" value="60" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY28</label><input id="persFY28" type="number" value="91.67" step="0.01" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY29</label><input id="persFY29" type="number" value="116.67" step="0.01" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY30</label><input id="persFY30" type="number" value="141.67" step="0.01" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY31</label><input id="persFY31" type="number" value="166.67" step="0.01" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>FY32</label><input id="persFY32" type="number" value="183.33" step="0.01" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>Social Contributions</label><input id="socialRate" type="number" value="23" step="1" onchange="recalculate()"><span class="unit">%</span></div>
+    </div>
+
+    <!-- Funding -->
+    <div class="input-section">
+      <h3>Funding (T EUR)</h3>
+      <div class="field"><label>Seed (FY26)</label><input id="fundSeed" type="number" value="1500" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>Series A (FY27)</label><input id="fundSeriesA" type="number" value="2000" onchange="recalculate()"><span class="unit">T EUR</span></div>
+      <div class="field"><label>Series B (FY28)</label><input id="fundSeriesB" type="number" value="2500" onchange="recalculate()"><span class="unit">T EUR</span></div>
+    </div>
+
+    <!-- Valuation -->
+    <div class="input-section">
+      <h3>Valuation</h3>
+      <div class="field"><label>WACC</label><input id="wacc" type="number" value="12.5" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Terminal Growth</label><input id="termGrowth" type="number" value="2" step="0.5" onchange="recalculate()"><span class="unit">%</span></div>
+      <div class="field"><label>Exit Multiple (EV/EBITDA)</label><input id="exitMultiple" type="number" value="8" step="0.5" onchange="recalculate()"><span class="unit">x</span></div>
+      <div class="field"><label>Tax Rate</label><input id="taxRate" type="number" value="30" step="1" onchange="recalculate()"><span class="unit">%</span></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="recalculate()">Recalculate</button>
+      <button class="btn btn-secondary" onclick="resetDefaults()">Reset</button>
+      <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+    </div>
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div class="results-panel">
+    <div class="tab-bar">
+      <button class="active" onclick="showTab('kpi',this)">KPI Dashboard</button>
+      <button onclick="showTab('charts',this)">Charts</button>
+      <button onclick="showTab('pnl',this)">P&L Statement</button>
+      <button onclick="showTab('cashflow',this)">Cash Flow</button>
+      <button onclick="showTab('balance',this)">Balance Sheet</button>
+      <button onclick="showTab('scenario',this)">Scenarios</button>
+      <button onclick="showTab('valuation',this)">Valuation</button>
+      <button onclick="showTab('farmdetail',this)" style="color:var(--orbi-purple);">Farm Ops Detail</button>
+      <button onclick="showTab('plantcomp',this)">Plant Comparison</button>
+    </div>
+
+    <div id="tab-kpi" class="tab-content active"><div id="kpi-container" class="kpi-grid"></div></div>
+    <div id="tab-charts" class="tab-content"><div class="chart-grid">
+      <div class="chart-box"><h3>Total Revenue by Year (T EUR)</h3><canvas id="chartRevenue"></canvas></div>
+      <div class="chart-box"><h3>Revenue Mix (FY32)</h3><canvas id="chartRevMix"></canvas></div>
+      <div class="chart-box"><h3>P&L Waterfall FY32 (T EUR)</h3><canvas id="chartWaterfall"></canvas></div>
+      <div class="chart-box"><h3>EBITDA & Net Income (T EUR)</h3><canvas id="chartProfit"></canvas></div>
+      <div class="chart-box"><h3>Cumulative Cash Flow (T EUR)</h3><canvas id="chartCash"></canvas></div>
+      <div class="chart-box"><h3>Margin Evolution (%)</h3><canvas id="chartMargins"></canvas></div>
+      <div class="chart-box"><h3>Farm Operations Revenue by Farm (T EUR)</h3><canvas id="chartFarmOps"></canvas></div>
+      <div class="chart-box"><h3>Scenario Comparison - EBITDA (T EUR)</h3><canvas id="chartScenario"></canvas></div>
+    </div></div>
+    <div id="tab-pnl" class="tab-content"><div class="table-wrap"><h3>Income Statement (T EUR) <span id="pnl-scenario-badge"></span></h3><div id="pnl-table"></div></div></div>
+    <div id="tab-cashflow" class="tab-content"><div class="table-wrap"><h3>Cash Flow Statement (T EUR)</h3><div id="cf-table"></div></div></div>
+    <div id="tab-balance" class="tab-content"><div class="table-wrap"><h3>Balance Sheet (T EUR)</h3><div id="bs-table"></div></div></div>
+    <div id="tab-scenario" class="tab-content"><div class="table-wrap"><h3>Scenario Comparison (T EUR)</h3><div id="sc-table"></div></div></div>
+    <div id="tab-valuation" class="tab-content"><div id="val-container"></div></div>
+    <div id="tab-farmdetail" class="tab-content"><div class="table-wrap"><h3>Farm Operations Detail</h3><div id="farmdetail-table"></div></div></div>
+    <div id="tab-plantcomp" class="tab-content"><div class="table-wrap"><h3>Plant Comparison – All Plants (Default Parameters)</h3><div id="plantcomp-table"></div></div></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// PLACEHOLDER - Scripts will be added in next steps
+// ============================================================
+const YEARS = [2026, 2027, 2028, 2029, 2030, 2031, 2032];
+const FY_LABELS = ['FY26','FY27','FY28','FY29','FY30','FY31','FY32'];
+
+// ============================================================
+// PLANTS DATABASE
+// ============================================================
+const PLANTS = {
+  "Matcha (Camellia sinensis)": {
+    category: "Pharma", productName: "Matcha",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 600, capexAddon: 500000,
+    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.2,
+    yield: 4.5, productFraction: 0.85, sidestreamMass: 3000,
+    nutrientCost: 0.3, processingCost: 2,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 150, sidestreamRevenue: 127000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.85, outdoorHarvests: 2, indoorHarvests: 7
+  },
+  "Cannabis sativa (GMP Pharma)": {
+    category: "Pharma", productName: "Flowers (GMP)",
+    modules: 1, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 6000, capexAddon: 500000,
+    electricityPrice: 0.07, lightingEnergy: 1.8, energyOverhead: 1.0,
+    yield: 6.89, productFraction: 0.5, sidestreamMass: 0,
+    nutrientCost: 1.9, processingCost: 5.5,
+    personnel: 600000, maintenance: 0, rent: 5, otherOpex: 150000, licenseFee: 10,
+    productPrice: 1800, sidestreamRevenue: 4178033,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 3.0, outdoorHarvests: 1, indoorHarvests: 4
+  },
+  "Primula veris (Saponin Extract)": {
+    category: "Pharma", productName: "Dry Extract (std.)",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 400, capexAddon: 200000,
+    electricityPrice: 0.07, lightingEnergy: 1.32, energyOverhead: 1.0,
+    yield: 0.834, productFraction: 0.3393, sidestreamMass: 0,
+    nutrientCost: 14.74, processingCost: 12.5,
+    personnel: 158581, maintenance: 0.9, rent: 5, otherOpex: 199258, licenseFee: 10,
+    productPrice: 2000, sidestreamRevenue: 0,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.10, outdoorHarvests: 1, indoorHarvests: 4
+  },
+  "Peas → TVP": {
+    category: "Food", productName: "TVP",
+    modules: 10, loops: 30, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 300, capexAddon: 2000000,
+    electricityPrice: 0.07, lightingEnergy: 1.54, energyOverhead: 1.0,
+    yield: 30.42, productFraction: 0.27, sidestreamMass: 0,
+    nutrientCost: 0, processingCost: 0,
+    personnel: 238613, maintenance: 0, rent: 5, otherOpex: 150000, licenseFee: 10,
+    productPrice: 28, sidestreamRevenue: 301167,
+    co2Factor: 0.483, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.25, outdoorHarvests: 1, indoorHarvests: 6
+  },
+  "Saffron (Crocus sativus)": {
+    category: "Food", productName: "Saffron (Pharma-Grade)",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 400, capexAddon: 200000,
+    electricityPrice: 0.07, lightingEnergy: 0.6, energyOverhead: 1.3,
+    yield: 1.414, productFraction: 1.0, sidestreamMass: 0,
+    nutrientCost: 50, processingCost: 150,
+    personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 15000, sidestreamRevenue: 0,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.0008, outdoorHarvests: 1, indoorHarvests: 4
+  },
+  "Artemisia annua": {
+    category: "Pharma", productName: "Artemisinin Extract",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 450, capexAddon: 600000,
+    electricityPrice: 0.07, lightingEnergy: 1.2, energyOverhead: 1.2,
+    yield: 5, productFraction: 0.15, sidestreamMass: 40000,
+    nutrientCost: 0.5, processingCost: 15,
+    personnel: 160000, maintenance: 0.75, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 450, sidestreamRevenue: 200000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.45, outdoorHarvests: 1, indoorHarvests: 3
+  },
+  "Centella asiatica (Gotu Kola)": {
+    category: "Pharma", productName: "Centella Extract (cosmetic-grade)",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 450, capexAddon: 380000,
+    electricityPrice: 0.07, lightingEnergy: 0.8, energyOverhead: 1.2,
+    yield: 8, productFraction: 0.8, sidestreamMass: 10000,
+    nutrientCost: 0.2, processingCost: 3,
+    personnel: 180000, maintenance: 0.75, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 60, sidestreamRevenue: 80000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 1.0, outdoorHarvests: 3, indoorHarvests: 10
+  },
+  "Nicotiana benthamiana (Pharma)": {
+    category: "Pharma", productName: "Pharma Biomass (FW)",
+    modules: 2, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 7000, capexAddon: 800000,
+    electricityPrice: 0.07, lightingEnergy: 19.73, energyOverhead: 1.0,
+    yield: 30, productFraction: 1, sidestreamMass: 0,
+    nutrientCost: 0, processingCost: 1.26,
+    personnel: 450000, maintenance: 0, rent: 8, otherOpex: 350000, licenseFee: 10,
+    productPrice: 822.5, sidestreamRevenue: 0,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 10.0, outdoorHarvests: 3, indoorHarvests: 6
+  },
+  "Andrographis paniculata": {
+    category: "Pharma", productName: "Andrographolide Extract",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 300000,
+    electricityPrice: 0.07, lightingEnergy: 1.4, energyOverhead: 1.2,
+    yield: 3.5, productFraction: 0.3, sidestreamMass: 2000,
+    nutrientCost: 0.5, processingCost: 3,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 250, sidestreamRevenue: 40000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.45, outdoorHarvests: 1, indoorHarvests: 5
+  },
+  "Echinacea purpurea": {
+    category: "Pharma", productName: "Echinacea Herba/Radix Extract",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 400000,
+    electricityPrice: 0.07, lightingEnergy: 1.2, energyOverhead: 1.2,
+    yield: 5, productFraction: 0.6, sidestreamMass: 4000,
+    nutrientCost: 0.4, processingCost: 2.5,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 340, sidestreamRevenue: 80000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 1.15, outdoorHarvests: 1, indoorHarvests: 3
+  },
+  "Glycyrrhiza glabra (Liquorice)": {
+    category: "Pharma", productName: "Glycyrrhizin / Glycyrrhetinic Acid",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 400000,
+    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.2,
+    yield: 6, productFraction: 0.5, sidestreamMass: 5000,
+    nutrientCost: 0.3, processingCost: 2,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 180, sidestreamRevenue: 90000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.40, outdoorHarvests: 1, indoorHarvests: 3
+  },
+  "Salvia miltiorrhiza (Danshen)": {
+    category: "Pharma", productName: "Tanshinone/Salvianolic Acid Extract",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 500000,
+    electricityPrice: 0.07, lightingEnergy: 1.3, energyOverhead: 1.2,
+    yield: 3.5, productFraction: 0.25, sidestreamMass: 4000,
+    nutrientCost: 0.8, processingCost: 5,
+    personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 1400, sidestreamRevenue: 150000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 2.25, outdoorHarvests: 1, indoorHarvests: 3
+  },
+  "Scutellaria baicalensis": {
+    category: "Pharma", productName: "Baicalin/Baicalein Extract",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 400000,
+    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.2,
+    yield: 4, productFraction: 0.4, sidestreamMass: 3000,
+    nutrientCost: 0.5, processingCost: 3,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 900, sidestreamRevenue: 60000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.40, outdoorHarvests: 1, indoorHarvests: 3
+  },
+  "Catharanthus roseus (Madagascar Periwinkle)": {
+    category: "Pharma", productName: "Vinblastine/Vincristine Extract",
+    modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
+    capexPerM2: 600, capexAddon: 500000,
+    electricityPrice: 0.07, lightingEnergy: 1.4, energyOverhead: 1.2,
+    yield: 2.8, productFraction: 0.15, sidestreamMass: 5000,
+    nutrientCost: 1, processingCost: 8,
+    personnel: 250000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 1196, sidestreamRevenue: 180000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 2.25, outdoorHarvests: 1, indoorHarvests: 4
+  },
+  "Matricaria chamomilla (Pharma Extract)": {
+    category: "Pharma", productName: "Chamomile Extract",
+    modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 900, capexAddon: 1150000,
+    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.15,
+    yield: 7.68, productFraction: 0.108, sidestreamMass: 0,
+    nutrientCost: 4.63, processingCost: 31.3,
+    personnel: 420000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
+    productPrice: 1196, sidestreamRevenue: 0,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.13, outdoorHarvests: 1, indoorHarvests: 6
+  },
+  "Stevia rebaudiana": {
+    category: "Food", productName: "Stevia Glycoside Extract",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 500, capexAddon: 400000,
+    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.2,
+    yield: 3.5, productFraction: 0.6, sidestreamMass: 5000,
+    nutrientCost: 0.25, processingCost: 5,
+    personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 80, sidestreamRevenue: 75000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.60, outdoorHarvests: 2, indoorHarvests: 5
+  },
+  "Tulsi (Ocimum tenuiflorum)": {
+    category: "Pharma", productName: "Dried Tulsi Herb",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 450, capexAddon: 350000,
+    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.2,
+    yield: 5, productFraction: 0.9, sidestreamMass: 8000,
+    nutrientCost: 0.2, processingCost: 1.5,
+    personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
+    productPrice: 35, sidestreamRevenue: 120000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 1.15, outdoorHarvests: 2, indoorHarvests: 5
+  },
+  "Hops (Humulus lupulus)": {
+    category: "Food", productName: "Hop Pellets / CO2 Extract",
+    modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 900, capexAddon: 1150000,
+    electricityPrice: 0.07, lightingEnergy: 0.95, energyOverhead: 1.12,
+    yield: 6, productFraction: 0.55, sidestreamMass: 0,
+    nutrientCost: 0.55, processingCost: 1.3,
+    personnel: 420000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
+    productPrice: 35, sidestreamRevenue: 0,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.25, outdoorHarvests: 1, indoorHarvests: 4
+  },
+  "Nasturtium officinale (Watercress)": {
+    category: "Pharma", productName: "PEITC-enriched Extract",
+    modules: 10, loops: 20, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 450, capexAddon: 1100000,
+    electricityPrice: 0.07, lightingEnergy: 0.8, energyOverhead: 1.15,
+    yield: 3.5, productFraction: 0.2, sidestreamMass: 14140,
+    nutrientCost: 3, processingCost: 22,
+    personnel: 360000, maintenance: 0.75, rent: 9, otherOpex: 0, licenseFee: 10,
+    productPrice: 400, sidestreamRevenue: 950000,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 1.5,
+    outdoorYield: 5.5, outdoorHarvests: 2, indoorHarvests: 10
+  },
+  "Taraxacum officinale (Dandelion)": {
+    category: "Pharma", productName: "Root Extract (Taraxasterol)",
+    modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 900, capexAddon: 850000,
+    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.15,
+    yield: 8.5, productFraction: 0.08, sidestreamMass: 24240,
+    nutrientCost: 3.8, processingCost: 22,
+    personnel: 380000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
+    productPrice: 350, sidestreamRevenue: 300000,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 2.02,
+    outdoorYield: 0.55, outdoorHarvests: 1, indoorHarvests: 7
+  },
+  "Urtica dioica (Stinging Nettle)": {
+    category: "Pharma", productName: "beta-Sitosterol Root Extract",
+    modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 900, capexAddon: 1100000,
+    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.15,
+    yield: 9.5, productFraction: 0.2, sidestreamMass: 22700,
+    nutrientCost: 3.5, processingCost: 25,
+    personnel: 380000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
+    productPrice: 180, sidestreamRevenue: 420000,
+    co2Factor: 0, co2Price: 0, depreciation: 10, auxFactor: 2.02,
+    outdoorYield: 0.85, outdoorHarvests: 2, indoorHarvests: 7
+  },
+  "Wheatgrass (Triticum aestivum)": {
+    category: "Food", productName: "Organic Wheatgrass Powder",
+    modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
+    capexPerM2: 350, capexAddon: 1000000,
+    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.2,
+    yield: 20, productFraction: 0.85, sidestreamMass: 40000,
+    nutrientCost: 0.4, processingCost: 1.5,
+    personnel: 200000, maintenance: 5, rent: 5, otherOpex: 80000, licenseFee: 10,
+    productPrice: 22, sidestreamRevenue: 20000,
+    co2Factor: 1.5, co2Price: 150, depreciation: 10, auxFactor: 1.4,
+    outdoorYield: 0.75, outdoorHarvests: 1, indoorHarvests: 30
+  }
+};
+
+let charts = {};
+let lastResult = null;
+let ownFarms = [];
+let farmIdCounter = 0;
+
+function val(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function ival(id) { return parseInt(document.getElementById(id).value) || 0; }
+
+// ============================================================
+// FARM OPERATIONS UI
+// ============================================================
+const PLANT_PARAMS = ['modules','loops','reserveLoops','loopHeight','loopWidth','auxFactor',
+  'capexPerM2','capexAddon','electricityPrice','lightingEnergy','energyOverhead',
+  'yield','productFraction','sidestreamMass','nutrientCost','processingCost',
+  'personnel','maintenance','rent','otherOpex','licenseFee',
+  'productPrice','sidestreamRevenue','co2Factor','co2Price','depreciation'];
+
+function addFarm(preset) {
+  const id = ++farmIdCounter;
+  const plantNames = Object.keys(PLANTS).sort();
+  const defaultPlant = plantNames[0];
+  const p = preset || { name: 'Farm #' + id, startYear: 2026, buildTime: 12, plant: defaultPlant, share: 51, params: {...PLANTS[defaultPlant]} };
+  ownFarms.push({ id, ...p });
+  renderFarmCards();
+  recalculate();
+}
+
+function removeFarm(id) {
+  ownFarms = ownFarms.filter(f => f.id !== id);
+  renderFarmCards();
+  recalculate();
+}
+
+function setAllShares() {
+  const s = parseFloat(document.getElementById('globalShare').value) || 51;
+  ownFarms.forEach(f => f.share = s);
+  renderFarmCards();
+  recalculate();
+}
+
+function onFarmPlantChange(id) {
+  const farm = ownFarms.find(f => f.id === id);
+  if (!farm) return;
+  const plantName = document.getElementById('fp_plant_' + id).value;
+  farm.plant = plantName;
+  const p = PLANTS[plantName];
+  if (p) { PLANT_PARAMS.forEach(k => { if (p[k] !== undefined) farm.params[k] = p[k]; }); }
+  renderFarmCards();
+  recalculate();
+}
+
+function onFarmFieldChange(id, field) {
+  const farm = ownFarms.find(f => f.id === id);
+  if (!farm) return;
+  const el = document.getElementById('fp_' + field + '_' + id);
+  if (!el) return;
+  if (field === 'name') { farm.name = el.value; }
+  else if (field === 'startYear') { farm.startYear = parseInt(el.value) || 2026; }
+  else if (field === 'buildTime') { farm.buildTime = parseInt(el.value) || 12; }
+  else if (field === 'share') { farm.share = parseFloat(el.value) || 0; }
+  else { farm.params[field] = parseFloat(el.value) || 0; }
+  recalculate();
+}
+
+function toggleFarmDetails(id) {
+  const el = document.getElementById('farmdetails_' + id);
+  if (el) el.classList.toggle('open');
+}
+
+function renderFarmCards() {
+  const container = document.getElementById('farmCards');
+  const plantNames = Object.keys(PLANTS).sort();
+  let html = '';
+  ownFarms.forEach(f => {
+    const unit = calculateFarmUnit(f.params);
+    const opStartDecimal = f.startYear + f.buildTime / 12;
+    const opYear = Math.ceil(opStartDecimal); // first full calendar year of operation (or partial)
+    const opMonth = Math.round((opStartDecimal % 1) * 12) || 1;
+    const monthNames = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const statusLabel = opYear > 2032 ? 'Never operational' : `Operational from ${monthNames[opMonth]} ${Math.floor(opStartDecimal)}`;
+    html += `<div class="farm-card">
+      <button class="delete-btn" onclick="removeFarm(${f.id})" title="Remove farm">&times;</button>
+      <div class="farm-card-header">
+        <input type="text" id="fp_name_${f.id}" value="${f.name}" onchange="onFarmFieldChange(${f.id},'name')">
+        <span class="farm-badge">${statusLabel}</span>
+      </div>
+      <div class="farm-card-row">
+        <div class="mini-field">
+          <label>Plant</label>
+          <select id="fp_plant_${f.id}" onchange="onFarmPlantChange(${f.id})" style="width:100%;">
+            ${plantNames.map(n => `<option value="${n}" ${n===f.plant?'selected':''}>${PLANTS[n].category==='Pharma'?'&#x1F9EC;':'&#x1F33F;'} ${n}</option>`).join('')}
+          </select>
+        </div>
+        <div class="mini-field">
+          <label>Share</label>
+          <input type="number" id="fp_share_${f.id}" value="${f.share}" min="0" max="100" onchange="onFarmFieldChange(${f.id},'share')">
+          <span style="font-size:10px;">%</span>
+        </div>
+      </div>
+      <div class="farm-card-row">
+        <div class="mini-field">
+          <label>Start Year</label>
+          <select id="fp_startYear_${f.id}" onchange="onFarmFieldChange(${f.id},'startYear')">
+            ${YEARS.map(y => `<option value="${y}" ${y===f.startYear?'selected':''}>${y}</option>`).join('')}
+          </select>
+        </div>
+        <div class="mini-field">
+          <label>Build Time</label>
+          <select id="fp_buildTime_${f.id}" onchange="onFarmFieldChange(${f.id},'buildTime')">
+            ${[3,6,9,12,15,18,21,24].map(m => `<option value="${m}" ${f.buildTime===m?'selected':''}>${m} months</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="farm-summary">
+        <strong>EBITDA:</strong> ${fmtEurShort(unit.ebitda)} /yr &middot;
+        <strong>CapEx:</strong> ${fmtEurShort(unit.totalCapex)} &middot;
+        <strong>Share EBITDA:</strong> ${fmtEurShort(unit.ebitda * f.share / 100)} /yr &middot;
+        <strong>ROI:</strong> ${unit.totalCapex > 0 ? (unit.ebitda / unit.totalCapex * 100).toFixed(1) : 0}%
+      </div>
+      <span class="farm-detail-toggle" onclick="toggleFarmDetails(${f.id})">&#x25BC; Show / hide parameters</span>
+      <div id="farmdetails_${f.id}" class="farm-details">
+        <div class="detail-grid">
+          ${PLANT_PARAMS.map(k => `<div class="mini-field">
+            <label>${k}</label>
+            <input type="number" id="fp_${k}_${f.id}" value="${f.params[k]}" step="any" onchange="onFarmFieldChange(${f.id},'${k}')">
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function fmtEurShort(n) {
+  if (n === Infinity || isNaN(n)) return '-';
+  if (Math.abs(n) >= 1e6) return (n/1e6).toFixed(2) + ' M';
+  if (Math.abs(n) >= 1e3) return (n/1e3).toFixed(0) + ' k';
+  return n.toFixed(0) + ' EUR';
+}
+
+// ============================================================
+// CALCULATION ENGINE
+// ============================================================
+function calcAreaPerLoop(h, w) { return Math.round(h * w * (101 / 48)); }
+
+function calculateFarmUnit(params) {
+  const p = params;
+  const areaPerLoop = calcAreaPerLoop(p.loopHeight || 12, p.loopWidth || 4);
+  const productiveArea = (p.modules || 0) * (p.loops || 0) * areaPerLoop;
+  const capexArea = (p.modules || 0) * ((p.loops || 0) + (p.reserveLoops || 0)) * areaPerLoop;
+  const floorSpace = (p.modules || 0) * ((p.loops || 0) + (p.reserveLoops || 0)) * 10 * (p.auxFactor || 1.4);
+  const totalCapex = capexArea * (p.capexPerM2 || 0) + (p.capexAddon || 0);
+
+  const annualEnergy = productiveArea * (p.lightingEnergy || 0) * (p.energyOverhead || 1) * 365;
+  const annualEnergyCost = annualEnergy * (p.electricityPrice || 0);
+  const annualBiomass = productiveArea * (p.yield || 0);
+  const primaryOutput = annualBiomass * (p.productFraction || 0);
+
+  const opexEnergy = annualEnergyCost;
+  const opexMaterials = primaryOutput * (p.nutrientCost || 0);
+  const opexProcessing = primaryOutput * (p.processingCost || 0);
+  const opexMaintenance = totalCapex * ((p.maintenance || 0) / 100);
+  const opexPersonnel = p.personnel || 0;
+  const opexRent = floorSpace * (p.rent || 0) * 12;
+  const opexOther = p.otherOpex || 0;
+
+  const revPrimary = primaryOutput * (p.productPrice || 0);
+  const revSidestream = p.sidestreamRevenue || 0;
+  const revCO2 = (p.co2Factor > 0 && p.co2Price > 0) ? (annualBiomass / 1000) * p.co2Factor * p.co2Price : 0;
+  const totalRevenue = revPrimary + revSidestream + revCO2;
+
+  const opexLicense = totalRevenue * ((p.licenseFee || 0) / 100);
+  const totalOpex = opexEnergy + opexMaterials + opexProcessing + opexMaintenance + opexPersonnel + opexRent + opexOther + opexLicense;
+
+  const ebitda = totalRevenue - totalOpex;
+  const depreciationAmt = totalCapex / (p.depreciation || 10);
+  const ebit = ebitda - depreciationAmt;
+  const ebitdaMargin = totalRevenue > 0 ? ebitda / totalRevenue : 0;
+  const roi = totalCapex > 0 ? ebitda / totalCapex : 0;
+  const payback = ebitda > 0 ? totalCapex / ebitda : Infinity;
+
+  return { productiveArea, capexArea, floorSpace, totalCapex, annualEnergy, annualEnergyCost,
+    annualBiomass, primaryOutput, opexEnergy, opexMaterials, opexProcessing, opexMaintenance,
+    opexPersonnel, opexRent, opexOther, opexLicense, totalOpex,
+    revPrimary, revSidestream, revCO2, totalRevenue,
+    ebitda, depreciationAmt, ebit, ebitdaMargin, roi, payback };
+}
+
+function getGmbHInputs() {
+  const pricing = { licenseFee: val('licenseFee') / 100, maintRate: val('maintRate') };
+  const cogs = { hwCost: val('hwCostRate') / 100, discount: val('discountRate') / 100, royalty: val('royaltyRate') / 100, maintCost: val('maintCostRate') / 100 };
+  const opexRates = {
+    accounting: val('opexAccounting') / 100, consulting: val('opexConsulting') / 100,
+    insurance: val('opexInsurance') / 100, prodDev: val('opexProdDev') / 100,
+    patents: val('opexPatents') / 100, marketing: val('opexMarketing') / 100,
+    comm: val('opexComm') / 100, office: val('opexOffice') / 100,
+    travel: val('opexTravel') / 100, other: val('opexOther') / 100
+  };
+  const personnel = [val('persFY26'), val('persFY27'), val('persFY28'), val('persFY29'), val('persFY30'), val('persFY31'), val('persFY32')];
+  const socialRate = val('socialRate') / 100;
+  const funding = [val('fundSeed'), val('fundSeriesA'), val('fundSeriesB'), 0, 0, 0, 0];
+  const scenario = document.getElementById('scenario').value;
+  const scenarioMult = {
+    base: { growth: 1, price: 1, cogs: 1, opex: 1 },
+    bull: { growth: 1.2, price: 1.1, cogs: 0.95, opex: 0.9 },
+    bear: { growth: 0.8, price: 0.9, cogs: 1.05, opex: 1.1 }
+  };
+  const valuation = { wacc: val('wacc') / 100, termGrowth: val('termGrowth') / 100, exitMultiple: val('exitMultiple'), taxRate: val('taxRate') / 100 };
+
+  return { pricing, cogs, opexRates, personnel, socialRate, funding, scenario, scenarioMult, valuation };
+}
+
+function calculateScenario(inp, mult) {
+  const R = { years: YEARS.slice() };
+
+  // ── All revenue streams derived from Farm Cards ──
+  let totalHwRev = [0,0,0,0,0,0,0];      // Construction Revenue (one-time, 100% of farm CapEx)
+  let maintRev = [0,0,0,0,0,0,0];         // Maintenance Revenue (recurring, maintRate × productive area)
+  let licensingRev = [0,0,0,0,0,0,0];     // Licensing Revenue (recurring, licenseFee × farm crop revenue)
+  let farmOpsRev = [0,0,0,0,0,0,0];       // Farm Ops Revenue (OrbiFarm share of farm revenue)
+  let farmOpsCosts = [0,0,0,0,0,0,0];     // Farm Ops Costs (OrbiFarm share of farm OpEx)
+  let farmOpsCapex = [0,0,0,0,0,0,0];     // Farm Ops CapEx (OrbiFarm share, for balance sheet)
+  let farmOpsDepr = [0,0,0,0,0,0,0];
+  let farmOpsEbitda = [0,0,0,0,0,0,0];
+  let ownFarmsOperational = [0,0,0,0,0,0,0];
+  R.farmDetails = [];
+
+  ownFarms.forEach(farm => {
+    const unit = calculateFarmUnit(farm.params);
+    const share = farm.share / 100;
+    // buildTime is in months → operational start as decimal year
+    const opStartDecimal = farm.startYear + farm.buildTime / 12;
+    const capexYear = farm.startYear;
+
+    const detail = {
+      id: farm.id, name: farm.name, plant: farm.plant, share: farm.share,
+      startYear: farm.startYear, buildTime: farm.buildTime, opStart: opStartDecimal,
+      totalCapex: unit.totalCapex, totalRevenue: unit.totalRevenue,
+      totalOpex: unit.totalOpex, ebitda: unit.ebitda, ebit: unit.ebit,
+      productiveArea: unit.productiveArea,
+      roi: unit.roi, payback: unit.payback, ebitdaMargin: unit.ebitdaMargin,
+      revByYear: [0,0,0,0,0,0,0], costsByYear: [0,0,0,0,0,0,0],
+      capexByYear: [0,0,0,0,0,0,0], ebitdaByYear: [0,0,0,0,0,0,0]
+    };
+
+    for (let y = 0; y < 7; y++) {
+      const yr = YEARS[y];
+      const yrEnd = yr + 1; // end of calendar year
+
+      // Construction Revenue: OrbiFarm builds the farm (100% of CapEx, one-time)
+      if (yr === capexYear) {
+        totalHwRev[y] += unit.totalCapex * mult.price / 1000;
+        farmOpsCapex[y] += unit.totalCapex * share / 1000;
+        detail.capexByYear[y] = unit.totalCapex * share / 1000;
+      }
+
+      // Operational phase: recurring revenue streams (pro-rata in first year)
+      if (opStartDecimal < yrEnd && opStartDecimal <= 2033) {
+        // Calculate operational fraction for this year (0 to 1)
+        let opFraction = 1.0;
+        if (opStartDecimal > yr) {
+          // First partial year: fraction = months operational / 12
+          opFraction = (yrEnd - opStartDecimal);
+          opFraction = Math.max(0, Math.min(1, opFraction));
+        }
+        if (opFraction <= 0) continue;
+
+        // Maintenance Revenue: OrbiFarm maintains the farm (100%, not share-dependent)
+        maintRev[y] += inp.pricing.maintRate * unit.productiveArea * opFraction / 1000;
+
+        // Licensing Revenue: fee on farm's total crop revenue (100%, not share-dependent)
+        licensingRev[y] += unit.totalRevenue * inp.pricing.licenseFee * mult.price * opFraction / 1000;
+
+        // Farm Ops P&L: OrbiFarm's ownership share of farm economics
+        farmOpsRev[y] += unit.totalRevenue * share * opFraction / 1000;
+        farmOpsCosts[y] += unit.totalOpex * share * opFraction / 1000;
+        farmOpsDepr[y] += unit.depreciationAmt * share * opFraction / 1000;
+        farmOpsEbitda[y] += unit.ebitda * share * opFraction / 1000;
+        if (opFraction > 0) ownFarmsOperational[y]++;
+
+        detail.revByYear[y] = unit.totalRevenue * share * opFraction / 1000;
+        detail.costsByYear[y] = unit.totalOpex * share * opFraction / 1000;
+        detail.ebitdaByYear[y] = unit.ebitda * share * opFraction / 1000;
+      }
+    }
+    R.farmDetails.push(detail);
+  });
+
+  R.totalHwRev = totalHwRev;
+  R.maintRev = maintRev;
+  R.licensingRev = licensingRev;
+  R.farmOpsRev = farmOpsRev;
+  R.farmOpsCosts = farmOpsCosts;
+  R.farmOpsCapex = farmOpsCapex;
+  R.farmOpsDepr = farmOpsDepr;
+  R.farmOpsEbitda = farmOpsEbitda;
+  R.ownFarmsOperational = ownFarmsOperational;
+
+  // ── Total Revenue ──
+  let totalRevenue = totalHwRev.map((v, i) => v + maintRev[i] + licensingRev[i] + farmOpsRev[i]);
+  R.totalRevenue = totalRevenue;
+
+  // ── COGS (GmbH) ──
+  let hwCosts = totalHwRev.map(v => v * inp.cogs.hwCost * mult.cogs);
+  let discounts = totalHwRev.map(v => v * inp.cogs.discount);
+  let royalties = totalHwRev.map(v => v * inp.cogs.royalty);
+  let maintCosts = maintRev.map(v => v * inp.cogs.maintCost * mult.cogs);
+  let totalCOGS = hwCosts.map((v, i) => v + discounts[i] + royalties[i] + maintCosts[i] + farmOpsCosts[i]);
+  R.hwCosts = hwCosts; R.discounts = discounts; R.royalties = royalties; R.maintCosts = maintCosts; R.totalCOGS = totalCOGS;
+
+  // ── Gross Profit ──
+  let grossProfit = totalRevenue.map((v, i) => v - totalCOGS[i]);
+  let grossMargin = totalRevenue.map((v, i) => v > 0 ? grossProfit[i] / v : 0);
+  R.grossProfit = grossProfit; R.grossMargin = grossMargin;
+
+  // ── Operating Expenses ──
+  let persAnnual = inp.personnel.map(v => v * 12);
+  let socialCosts = persAnnual.map(v => v * inp.socialRate);
+  const opexKeys = Object.keys(inp.opexRates);
+  let variableOpex = {};
+  let totalVariableOpex = [0,0,0,0,0,0,0];
+  opexKeys.forEach(k => {
+    variableOpex[k] = grossProfit.map(gp => Math.max(0, gp) * inp.opexRates[k] * mult.opex);
+    variableOpex[k].forEach((v, i) => totalVariableOpex[i] += v);
+  });
+  let totalOpex = persAnnual.map((v, i) => v + socialCosts[i] + totalVariableOpex[i]);
+  R.persAnnual = persAnnual; R.socialCosts = socialCosts;
+  R.variableOpex = variableOpex; R.totalOpex = totalOpex;
+
+  // ── EBITDA ──
+  let ebitda = grossProfit.map((v, i) => v - totalOpex[i]);
+  let ebitdaMargin = totalRevenue.map((v, i) => v > 0 ? ebitda[i] / v : 0);
+  R.ebitda = ebitda; R.ebitdaMargin = ebitdaMargin;
+
+  // ── D&A ──
+  let depreciation = totalHwRev.map(v => v * 0.02);
+  let patentsOpex = variableOpex.patents ? variableOpex.patents.slice() : [0,0,0,0,0,0,0];
+  let amortization = patentsOpex.slice();
+  // Add farm ops depreciation
+  let totalDA = depreciation.map((v, i) => v + amortization[i] + farmOpsDepr[i]);
+  R.depreciation = depreciation; R.amortization = amortization; R.totalDA = totalDA;
+
+  // ── PP&E for balance sheet ──
+  let ppe = totalHwRev.map((v, i) => v * 0.1 + farmOpsCapex[i]);
+  let intangibles = patentsOpex.map(v => v * 5);
+  let cumPPE = [0,0,0,0,0,0,0], cumDepr = [0,0,0,0,0,0,0];
+  let cumIntang = [0,0,0,0,0,0,0], cumAmort = [0,0,0,0,0,0,0];
+  for (let y = 0; y < 7; y++) {
+    cumPPE[y] = (y > 0 ? cumPPE[y-1] : 0) + ppe[y];
+    cumDepr[y] = (y > 0 ? cumDepr[y-1] : 0) + depreciation[y] + farmOpsDepr[y];
+    cumIntang[y] = (y > 0 ? cumIntang[y-1] : 0) + intangibles[y];
+    cumAmort[y] = (y > 0 ? cumAmort[y-1] : 0) + amortization[y];
+  }
+
+  // ── EBIT ──
+  let ebit = ebitda.map((v, i) => v - totalDA[i]);
+  let ebitMargin = totalRevenue.map((v, i) => v > 0 ? ebit[i] / v : 0);
+  R.ebit = ebit; R.ebitMargin = ebitMargin;
+
+  // ── Tax & Net Income ──
+  let taxRateVal = inp.valuation.taxRate;
+  let tax = ebit.map(v => v > 0 ? v * taxRateVal : 0);
+  let netIncome = ebit.map((v, i) => v - tax[i]);
+  let netMargin = totalRevenue.map((v, i) => v > 0 ? netIncome[i] / v : 0);
+  R.tax = tax; R.netIncome = netIncome; R.netMargin = netMargin;
+
+  let cumNetIncome = [0,0,0,0,0,0,0];
+  netIncome.forEach((v, i) => cumNetIncome[i] = (i > 0 ? cumNetIncome[i-1] : 0) + v);
+  R.cumNetIncome = cumNetIncome;
+
+  // ── Cash Flow ──
+  let ar = totalRevenue.map(v => v * 0.08);
+  let inv = totalCOGS.map(v => v * 0.1);
+  let prepaid = totalOpex.map(v => v * 0.013);
+  let ap = totalCOGS.map(v => v * 0.1);
+  let accrued = totalOpex.map(v => v * 0.08);
+  let deferred = totalRevenue.map(v => v * 0.05);
+
+  let chgAR = ar.map((v, i) => -(v - (i > 0 ? ar[i-1] : 0)));
+  let chgInv = inv.map((v, i) => -(v - (i > 0 ? inv[i-1] : 0)));
+  let chgPrepaid = prepaid.map((v, i) => -(v - (i > 0 ? prepaid[i-1] : 0)));
+  let chgAP = ap.map((v, i) => v - (i > 0 ? ap[i-1] : 0));
+  let chgAccrued = accrued.map((v, i) => v - (i > 0 ? accrued[i-1] : 0));
+  let chgDeferred = deferred.map((v, i) => v - (i > 0 ? deferred[i-1] : 0));
+
+  let cashOps = netIncome.map((v, i) => v + totalDA[i] + chgAR[i] + chgInv[i] + chgPrepaid[i] + chgAP[i] + chgAccrued[i] + chgDeferred[i]);
+  let capex = ppe.map(v => -v);
+  let investIntang = intangibles.map(v => -v);
+  let cashInvesting = capex.map((v, i) => v + investIntang[i]);
+  let cashFinancing = inp.funding.slice();
+  let netCashChange = cashOps.map((v, i) => v + cashInvesting[i] + cashFinancing[i]);
+  let cashBalance = [0,0,0,0,0,0,0];
+  for (let y = 0; y < 7; y++) cashBalance[y] = (y > 0 ? cashBalance[y-1] : 0) + netCashChange[y];
+
+  R.cashOps = cashOps; R.cashInvesting = cashInvesting; R.cashFinancing = cashFinancing;
+  R.netCashChange = netCashChange; R.cashBalance = cashBalance;
+  R.ar = ar; R.inv = inv; R.ap = ap;
+
+  // ── Balance Sheet ──
+  let totalCurrentAssets = cashBalance.map((v, i) => v + ar[i] + inv[i] + prepaid[i]);
+  let netPPE = cumPPE.map((v, i) => v - cumDepr[i]);
+  let netIntang = cumIntang.map((v, i) => v - cumAmort[i]);
+  let totalNonCurrent = netPPE.map((v, i) => v + netIntang[i]);
+  let totalAssets = totalCurrentAssets.map((v, i) => v + totalNonCurrent[i]);
+  let totalCurrentLiab = ap.map((v, i) => v + accrued[i] + deferred[i]);
+  let shareCapital = [0,0,0,0,0,0,0];
+  let cumEquity = 0;
+  for (let y = 0; y < 7; y++) { cumEquity += cashFinancing[y]; shareCapital[y] = cumEquity; }
+  let totalEquity = shareCapital.map((v, i) => v + cumNetIncome[i]);
+  let totalLiabEquity = totalCurrentLiab.map((v, i) => v + totalEquity[i]);
+
+  R.totalCurrentAssets = totalCurrentAssets; R.netPPE = netPPE; R.netIntang = netIntang;
+  R.totalNonCurrent = totalNonCurrent; R.totalAssets = totalAssets;
+  R.totalCurrentLiab = totalCurrentLiab; R.shareCapital = shareCapital;
+  R.totalEquity = totalEquity; R.totalLiabEquity = totalLiabEquity;
+
+  // ── Valuation ──
+  const waccR = inp.valuation.wacc;
+  const tg = inp.valuation.termGrowth;
+  let nopat = ebit.map(v => v > 0 ? v * (1 - taxRateVal) : v);
+  let fcf = nopat.map((v, i) => v + totalDA[i] + cashInvesting[i] + chgAR[i] + chgInv[i] + chgPrepaid[i] + chgAP[i] + chgAccrued[i] + chgDeferred[i]);
+  let discountFactor = YEARS.map((_, i) => 1 / Math.pow(1 + waccR, i + 0.5));
+  let pvFCF = fcf.map((v, i) => v * discountFactor[i]);
+  let sumPV = pvFCF.reduce((a, b) => a + b, 0);
+  let terminalValueEM = ebitda[6] * inp.valuation.exitMultiple;
+  let pvTerminalEM = terminalValueEM * discountFactor[6];
+  let evEM = sumPV + pvTerminalEM;
+  let terminalFCF = fcf[6] * (1 + tg);
+  let terminalValueGGM = waccR > tg ? terminalFCF / (waccR - tg) : 0;
+  let pvTerminalGGM = terminalValueGGM * discountFactor[6];
+  let evGGM = sumPV + pvTerminalGGM;
+  let evAvg = (evEM + evGGM) / 2;
+  let equityValue = evAvg + cashBalance[6] - totalCurrentLiab[6];
+
+  R.fcf = fcf; R.pvFCF = pvFCF; R.sumPV = sumPV;
+  R.terminalValueEM = terminalValueEM; R.pvTerminalEM = pvTerminalEM; R.evEM = evEM;
+  R.terminalValueGGM = terminalValueGGM; R.pvTerminalGGM = pvTerminalGGM; R.evGGM = evGGM;
+  R.evAvg = evAvg; R.equityValue = equityValue;
+
+  // ── Summary KPIs ──
+  R.totalRevSum = totalRevenue.reduce((a,b) => a+b, 0);
+  R.totalEBITDASum = ebitda.reduce((a,b) => a+b, 0);
+  R.totalNetIncomeSum = netIncome.reduce((a,b) => a+b, 0);
+  R.hwRevenueShare = totalRevenue[6] > 0 ? totalHwRev[6] / totalRevenue[6] : 0;
+  R.farmOpsShare = totalRevenue[6] > 0 ? farmOpsRev[6] / totalRevenue[6] : 0;
+  R.recurringShare = totalRevenue[6] > 0 ? (maintRev[6] + licensingRev[6] + farmOpsRev[6]) / totalRevenue[6] : 0;
+
+  R.ebitdaPosYear = 'N/A';
+  R.netIncomePosYear = 'N/A';
+  R.cumProfitPosYear = 'N/A';
+  for (let y = 0; y < 7; y++) {
+    if (ebitda[y] > 0 && R.ebitdaPosYear === 'N/A') R.ebitdaPosYear = FY_LABELS[y];
+    if (netIncome[y] > 0 && R.netIncomePosYear === 'N/A') R.netIncomePosYear = FY_LABELS[y];
+    if (cumNetIncome[y] > 0 && R.cumProfitPosYear === 'N/A') R.cumProfitPosYear = FY_LABELS[y];
+  }
+
+  return R;
+}
+
+// ============================================================
+// FORMATTING HELPERS
+// ============================================================
+function fmt(v, dec=0) {
+  if (v === undefined || v === null || isNaN(v)) return '-';
+  return v.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+function fmtPct(v) {
+  if (v === undefined || v === null || isNaN(v)) return '-';
+  return (v * 100).toFixed(1) + '%';
+}
+function fmtCell(v, dec=0) {
+  const s = fmt(v, dec);
+  return v < 0 ? `<span class="neg">${s}</span>` : s;
+}
+
+// ============================================================
+// RENDERING
+// ============================================================
+function renderKPIs(R, scenario) {
+  const sc = scenario.charAt(0).toUpperCase() + scenario.slice(1);
+  const badge = `<span class="scenario-badge ${scenario}">${sc} Case</span>`;
+  const sum = arr => arr.reduce((a,b)=>a+b,0);
+  const kpis = [
+    { label: 'Total Revenue (7Y)', value: fmt(R.totalRevSum), sub: 'T EUR cumulative', cls: 'highlight' },
+    { label: 'FY32 Revenue', value: fmt(R.totalRevenue[6]), sub: 'T EUR', cls: '' },
+    { label: 'Total EBITDA (7Y)', value: fmt(R.totalEBITDASum), sub: 'T EUR cumulative', cls: R.totalEBITDASum >= 0 ? 'highlight' : 'negative' },
+    { label: 'FY32 EBITDA', value: fmt(R.ebitda[6]), sub: `Margin: ${fmtPct(R.ebitdaMargin[6])}`, cls: R.ebitda[6] >= 0 ? '' : 'negative' },
+    { label: 'FY32 Net Income', value: fmt(R.netIncome[6]), sub: `Margin: ${fmtPct(R.netMargin[6])}`, cls: R.netIncome[6] >= 0 ? '' : 'negative' },
+    { label: 'FY32 Cash Position', value: fmt(R.cashBalance[6]), sub: 'T EUR', cls: R.cashBalance[6] >= 0 ? 'highlight' : 'negative' },
+    { label: 'Farm Ops Revenue (FY32)', value: fmt(R.farmOpsRev[6]), sub: `Share: ${fmtPct(R.farmOpsShare)}`, cls: 'purple' },
+    { label: 'Farm Ops EBITDA (FY32)', value: fmt(R.farmOpsEbitda[6]), sub: `${R.ownFarmsOperational[6]} farms operational`, cls: 'purple' },
+    { label: 'Own Farms Total CapEx (7Y)', value: fmt(sum(R.farmOpsCapex)), sub: 'T EUR (OrbiFarm share)', cls: 'purple' },
+    { label: 'Construction Rev. Share (FY32)', value: fmtPct(R.hwRevenueShare), sub: `Recurring: ${fmtPct(R.recurringShare)}`, cls: '' },
+    { label: 'FY32 Gross Margin', value: fmtPct(R.grossMargin[6]), sub: '', cls: '' },
+    { label: 'EBITDA Breakeven', value: R.ebitdaPosYear, sub: `Net Income: ${R.netIncomePosYear}`, cls: 'warn' },
+    { label: 'Cum. Profit Positive', value: R.cumProfitPosYear, sub: 'Year cumulative NI > 0', cls: 'warn' },
+    { label: 'Equity Value (DCF)', value: fmt(R.equityValue), sub: 'T EUR', cls: 'highlight' },
+    { label: 'Revenue Growth YoY', value: R.totalRevenue[5] > 0 ? fmtPct((R.totalRevenue[6] / R.totalRevenue[5]) - 1) : '-', sub: 'FY31 to FY32', cls: '' },
+    { label: 'Active Scenario', value: sc, sub: badge, cls: '' },
+  ];
+  document.getElementById('kpi-container').innerHTML = kpis.map(k =>
+    `<div class="kpi-card ${k.cls}"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="sub">${k.sub}</div></div>`
+  ).join('');
+}
+
+function makeTableRaw(headers, rows) {
+  let html = '<table class="data"><thead><tr>';
+  headers.forEach(h => html += `<th>${h}</th>`);
+  html += '</tr></thead><tbody>';
+  rows.forEach(r => {
+    const cls = r.cls ? ` class="${r.cls}"` : '';
+    html += `<tr${cls}>`;
+    r.cells.forEach((c, i) => {
+      if (i === 0) { html += `<td>${c}</td>`; return; }
+      if (typeof c === 'string') { html += `<td>${c}</td>`; return; }
+      const s = fmt(c);
+      html += `<td>${c < 0 ? '<span class="neg">' + s + '</span>' : s}</td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderPnL(R, scenario) {
+  const sc = scenario.charAt(0).toUpperCase() + scenario.slice(1);
+  document.getElementById('pnl-scenario-badge').innerHTML = `<span class="scenario-badge ${scenario}">${sc}</span>`;
+  const h = ['', ...FY_LABELS, 'TOTAL'];
+  const sum = arr => arr.reduce((a,b) => a+b, 0);
+  const rows = [
+    { cls: 'section-header', cells: ['Revenue', ...Array(8).fill('')] },
+    { cells: ['  Construction Revenue', ...R.totalHwRev, sum(R.totalHwRev)] },
+    { cells: ['  Maintenance Revenue', ...R.maintRev, sum(R.maintRev)] },
+    { cells: ['  Licensing Revenue', ...R.licensingRev, sum(R.licensingRev)] },
+    { cells: ['  Farm Operations Revenue', ...R.farmOpsRev, sum(R.farmOpsRev)] },
+    { cls: 'subtotal', cells: ['Total Revenue', ...R.totalRevenue, sum(R.totalRevenue)] },
+    { cls: 'section-header', cells: ['Cost of Goods Sold', ...Array(8).fill('')] },
+    { cells: ['  Construction Costs', ...R.hwCosts.map(v => -v), -sum(R.hwCosts)] },
+    { cells: ['  Discounts', ...R.discounts.map(v => -v), -sum(R.discounts)] },
+    { cells: ['  Royalties', ...R.royalties.map(v => -v), -sum(R.royalties)] },
+    { cells: ['  Maintenance Costs', ...R.maintCosts.map(v => -v), -sum(R.maintCosts)] },
+    { cells: ['  Farm Operations Costs', ...R.farmOpsCosts.map(v => -v), -sum(R.farmOpsCosts)] },
+    { cls: 'subtotal', cells: ['Total COGS', ...R.totalCOGS.map(v => -v), -sum(R.totalCOGS)] },
+    { cls: 'total', cells: ['Gross Profit', ...R.grossProfit, sum(R.grossProfit)] },
+    { cells: ['  Gross Margin %', ...R.grossMargin.map(v => fmtPct(v)), fmtPct(sum(R.grossProfit)/Math.max(sum(R.totalRevenue),1))] },
+    { cls: 'section-header', cells: ['Operating Expenses', ...Array(8).fill('')] },
+    { cells: ['  Personnel', ...R.persAnnual.map(v => -v), -sum(R.persAnnual)] },
+    { cells: ['  Social Contributions', ...R.socialCosts.map(v => -v), -sum(R.socialCosts)] },
+    { cells: ['  Variable OpEx', ...R.totalOpex.map((v, i) => -(v - R.persAnnual[i] - R.socialCosts[i])), -(sum(R.totalOpex) - sum(R.persAnnual) - sum(R.socialCosts))] },
+    { cls: 'subtotal', cells: ['Total OpEx', ...R.totalOpex.map(v => -v), -sum(R.totalOpex)] },
+    { cls: 'total', cells: ['EBITDA', ...R.ebitda, sum(R.ebitda)] },
+    { cells: ['  EBITDA Margin %', ...R.ebitdaMargin.map(v => fmtPct(v)), fmtPct(sum(R.ebitda)/Math.max(sum(R.totalRevenue),1))] },
+    { cells: ['  Depreciation', ...R.depreciation.map(v => -v), -sum(R.depreciation)] },
+    { cells: ['  Amortization', ...R.amortization.map(v => -v), -sum(R.amortization)] },
+    { cells: ['  Farm Ops Depreciation', ...R.farmOpsDepr.map(v => -v), -sum(R.farmOpsDepr)] },
+    { cls: 'total', cells: ['EBIT', ...R.ebit, sum(R.ebit)] },
+    { cells: ['  Tax', ...R.tax.map(v => -v), -sum(R.tax)] },
+    { cls: 'total', cells: ['NET INCOME', ...R.netIncome, sum(R.netIncome)] },
+    { cells: ['  Net Margin %', ...R.netMargin.map(v => fmtPct(v)), fmtPct(sum(R.netIncome)/Math.max(sum(R.totalRevenue),1))] },
+  ];
+  document.getElementById('pnl-table').innerHTML = makeTableRaw(h, rows);
+}
+
+function renderCashFlow(R) {
+  const h = ['', ...FY_LABELS, 'TOTAL'];
+  const sum = arr => arr.reduce((a,b) => a+b, 0);
+  const rows = [
+    { cls: 'section-header', cells: ['Operating Activities', ...Array(8).fill('')] },
+    { cells: ['  Net Income', ...R.netIncome, sum(R.netIncome)] },
+    { cells: ['  + D&A', ...R.totalDA, sum(R.totalDA)] },
+    { cells: ['  Working Capital Changes', ...R.cashOps.map((v,i) => v - R.netIncome[i] - R.totalDA[i]), 0] },
+    { cls: 'subtotal', cells: ['Cash from Operations', ...R.cashOps, sum(R.cashOps)] },
+    { cls: 'section-header', cells: ['Investing Activities', ...Array(8).fill('')] },
+    { cls: 'subtotal', cells: ['Cash from Investing', ...R.cashInvesting, sum(R.cashInvesting)] },
+    { cls: 'section-header', cells: ['Financing Activities', ...Array(8).fill('')] },
+    { cls: 'subtotal', cells: ['Cash from Financing', ...R.cashFinancing, sum(R.cashFinancing)] },
+    { cls: 'total', cells: ['Net Change in Cash', ...R.netCashChange, sum(R.netCashChange)] },
+    { cls: 'total', cells: ['Ending Cash Balance', ...R.cashBalance, R.cashBalance[6]] },
+  ];
+  document.getElementById('cf-table').innerHTML = makeTableRaw(h, rows);
+}
+
+function renderBalanceSheet(R) {
+  const h = ['', ...FY_LABELS];
+  const rows = [
+    { cls: 'section-header', cells: ['ASSETS', ...Array(7).fill('')] },
+    { cells: ['  Cash', ...R.cashBalance] },
+    { cells: ['  Accounts Receivable', ...R.ar] },
+    { cells: ['  Inventory', ...R.inv] },
+    { cls: 'subtotal', cells: ['Total Current Assets', ...R.totalCurrentAssets] },
+    { cells: ['  Net PP&E', ...R.netPPE] },
+    { cells: ['  Net Intangibles', ...R.netIntang] },
+    { cls: 'subtotal', cells: ['Total Non-Current', ...R.totalNonCurrent] },
+    { cls: 'total', cells: ['TOTAL ASSETS', ...R.totalAssets] },
+    { cls: 'section-header', cells: ['LIABILITIES & EQUITY', ...Array(7).fill('')] },
+    { cells: ['  Accounts Payable', ...R.ap] },
+    { cls: 'subtotal', cells: ['Total Current Liabilities', ...R.totalCurrentLiab] },
+    { cells: ['  Share Capital', ...R.shareCapital] },
+    { cells: ['  Retained Earnings', ...R.cumNetIncome] },
+    { cls: 'subtotal', cells: ['Total Equity', ...R.totalEquity] },
+    { cls: 'total', cells: ['TOTAL LIAB & EQUITY', ...R.totalLiabEquity] },
+  ];
+  document.getElementById('bs-table').innerHTML = makeTableRaw(h, rows);
+}
+
+function renderScenarios(base, bull, bear) {
+  const h = ['Metric', ...FY_LABELS, 'TOTAL'];
+  const sum = arr => arr.reduce((a,b) => a+b, 0);
+  const rows = [
+    { cls: 'section-header', cells: ['REVENUE (T EUR)', ...Array(8).fill('')] },
+    { cells: ['  Base Case', ...base.totalRevenue, sum(base.totalRevenue)] },
+    { cells: ['  Bull Case', ...bull.totalRevenue, sum(bull.totalRevenue)] },
+    { cells: ['  Bear Case', ...bear.totalRevenue, sum(bear.totalRevenue)] },
+    { cls: 'section-header', cells: ['EBITDA (T EUR)', ...Array(8).fill('')] },
+    { cells: ['  Base Case', ...base.ebitda, sum(base.ebitda)] },
+    { cells: ['  Bull Case', ...bull.ebitda, sum(bull.ebitda)] },
+    { cells: ['  Bear Case', ...bear.ebitda, sum(bear.ebitda)] },
+    { cls: 'section-header', cells: ['FARM OPS REVENUE (T EUR)', ...Array(8).fill('')] },
+    { cells: ['  Base Case', ...base.farmOpsRev, sum(base.farmOpsRev)] },
+    { cells: ['  Bull Case', ...bull.farmOpsRev, sum(bull.farmOpsRev)] },
+    { cells: ['  Bear Case', ...bear.farmOpsRev, sum(bear.farmOpsRev)] },
+    { cls: 'section-header', cells: ['CASH POSITION', ...Array(8).fill('')] },
+    { cells: ['  Base Case', ...base.cashBalance, base.cashBalance[6]] },
+    { cells: ['  Bull Case', ...bull.cashBalance, bull.cashBalance[6]] },
+    { cells: ['  Bear Case', ...bear.cashBalance, bear.cashBalance[6]] },
+  ];
+  document.getElementById('sc-table').innerHTML = makeTableRaw(h, rows);
+}
+
+function renderValuation(R, inp) {
+  document.getElementById('val-container').innerHTML = `
+    <div class="valuation-summary">
+      <div class="val-card primary"><h4>Equity Value (DCF Average)</h4><div class="val-value">${fmt(R.equityValue)} T EUR</div><div class="val-sub">${fmt(R.equityValue / 1000, 1)} M EUR</div></div>
+      <div class="val-card"><h4>EV (Exit Multiple)</h4><div class="val-value">${fmt(R.terminalValueEM)} T EUR</div><div class="val-sub">${inp.valuation.exitMultiple}x FY32 EBITDA</div></div>
+      <div class="val-card"><h4>EV (Gordon Growth)</h4><div class="val-value">${fmt(R.evGGM)} T EUR</div><div class="val-sub">Terminal growth: ${fmtPct(inp.valuation.termGrowth)}</div></div>
+      <div class="val-card"><h4>Sum PV of FCF</h4><div class="val-value">${fmt(R.sumPV)} T EUR</div><div class="val-sub">WACC: ${fmtPct(inp.valuation.wacc)}</div></div>
+      <div class="val-card"><h4>FY32 Cash Position</h4><div class="val-value">${fmt(R.cashBalance[6])} T EUR</div></div>
+      <div class="val-card"><h4>FY32 EBITDA</h4><div class="val-value">${fmt(R.ebitda[6])} T EUR</div><div class="val-sub">Margin: ${fmtPct(R.ebitdaMargin[6])}</div></div>
+    </div>
+    <div class="table-wrap" style="margin-top:20px;">
+      <h3>DCF Calculation (T EUR)</h3>
+      ${makeTableRaw(['', ...FY_LABELS], [
+        { cells: ['EBITDA', ...R.ebitda] },
+        { cells: ['EBIT', ...R.ebit] },
+        { cells: ['Free Cash Flow', ...R.fcf] },
+        { cells: ['PV of FCF', ...R.pvFCF] },
+      ])}
+    </div>`;
+}
+
+function renderFarmDetail(R) {
+  if (R.farmDetails.length === 0) {
+    document.getElementById('farmdetail-table').innerHTML = '<p style="color:#888;font-size:13px;">No own farms configured. Add farms in the left panel.</p>';
+    return;
+  }
+  const h = ['Farm', 'Plant', 'Start', 'Op.', 'Share', 'Area sqm', 'CapEx (100%)', 'Rev/yr', 'OpEx/yr', 'EBITDA/yr', 'ROI', 'Payback', ...FY_LABELS.map(l => l + ' EBITDA')];
+  const rows = R.farmDetails.map(d => ({
+    cells: [d.name, d.plant.substring(0, 20), d.startYear, d.opStart ? d.opStart.toFixed(1) : '-', d.share + '%',
+      fmt(d.productiveArea), fmt(d.totalCapex / 1000), fmt(d.totalRevenue / 1000), fmt(d.totalOpex / 1000),
+      fmt(d.ebitda / 1000), fmtPct(d.roi), d.payback < 100 ? d.payback.toFixed(1) + 'y' : '-',
+      ...d.ebitdaByYear.map(v => v)]
+  }));
+  // Totals row
+  const totals = { cells: ['TOTAL (OrbiFarm Share)', '', '', '', '',
+    fmt(R.farmDetails.reduce((a, d) => a + d.productiveArea, 0)),
+    '', fmt(R.farmDetails.reduce((a, d) => a + d.totalRevenue * d.share / 100 / 1000, 0)),
+    '', '', '', '', ...R.farmOpsEbitda] };
+  totals.cls = 'total';
+  rows.push(totals);
+  document.getElementById('farmdetail-table').innerHTML = makeTableRaw(h, rows);
+}
+
+function renderPlantComparison() {
+  const rows = [];
+  Object.keys(PLANTS).sort().forEach(name => {
+    const p = PLANTS[name];
+    const r = calculateFarmUnit(p);
+    rows.push({ name, cat: p.category, product: p.productName, price: p.productPrice, ...r });
+  });
+  rows.sort((a, b) => b.ebitda - a.ebitda);
+  let html = '<table class="comparison-table"><thead><tr>';
+  html += '<th>Plant</th><th>Cat.</th><th>Product</th><th>Price EUR/kg</th>';
+  html += '<th>CapEx</th><th>Revenue/yr</th><th>EBITDA/yr</th><th>Margin</th><th>ROI</th><th>Payback</th>';
+  html += '</tr></thead><tbody>';
+  rows.forEach(r => {
+    html += `<tr>
+      <td>${r.name}</td><td>${r.cat}</td><td>${r.product}</td><td>${fmt(r.price, 0)}</td>
+      <td>${fmtEurShort(r.totalCapex)}</td><td>${fmtEurShort(r.totalRevenue)}</td>
+      <td style="color:${r.ebitda >= 0 ? '#155724' : '#721c24'}">${fmtEurShort(r.ebitda)}</td>
+      <td>${fmtPct(r.ebitdaMargin)}</td><td>${fmtPct(r.roi)}</td>
+      <td>${r.payback < 100 ? r.payback.toFixed(1) + 'y' : '-'}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('plantcomp-table').innerHTML = html;
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function destroyCharts() { Object.values(charts).forEach(c => c.destroy()); charts = {}; }
+
+function renderCharts(R, base, bull, bear) {
+  destroyCharts();
+  const C = {
+    green: 'rgba(45,138,78,0.8)', greenL: 'rgba(45,138,78,0.15)',
+    accent: 'rgba(78,205,196,0.8)', blue: 'rgba(52,152,219,0.8)', blueL: 'rgba(52,152,219,0.15)',
+    red: 'rgba(231,76,60,0.8)', orange: 'rgba(243,156,18,0.8)',
+    purple: 'rgba(155,89,182,0.8)', purpleL: 'rgba(155,89,182,0.15)'
+  };
+
+  charts.revenue = new Chart(document.getElementById('chartRevenue'), {
+    type: 'bar', data: { labels: FY_LABELS, datasets: [
+      { label: 'Construction', data: R.totalHwRev, backgroundColor: C.green },
+      { label: 'Maintenance', data: R.maintRev, backgroundColor: C.accent },
+      { label: 'Licensing', data: R.licensingRev, backgroundColor: C.blue },
+      { label: 'Farm Ops', data: R.farmOpsRev, backgroundColor: C.purple },
+    ]}, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'T EUR' } } } }
+  });
+
+  charts.revMix = new Chart(document.getElementById('chartRevMix'), {
+    type: 'doughnut', data: { labels: ['Construction', 'Maintenance', 'Licensing', 'Farm Ops'],
+      datasets: [{ data: [R.totalHwRev[6], R.maintRev[6], R.licensingRev[6], R.farmOpsRev[6]], backgroundColor: [C.green, C.accent, C.blue, C.purple] }]
+    }, options: { responsive: true, plugins: { legend: { position: 'right' } } }
+  });
+
+  const wfV = [R.totalRevenue[6], -R.totalCOGS[6], R.grossProfit[6], -R.totalOpex[6], R.ebitda[6], -R.totalDA[6], R.ebit[6], -R.tax[6], R.netIncome[6]];
+  charts.waterfall = new Chart(document.getElementById('chartWaterfall'), {
+    type: 'bar', data: { labels: ['Revenue','COGS','Gross Profit','OpEx','EBITDA','D&A','EBIT','Tax','Net Income'],
+      datasets: [{ data: wfV, backgroundColor: wfV.map(v => v >= 0 ? C.green : C.red) }]
+    }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { title: { display: true, text: 'T EUR' } } } }
+  });
+
+  charts.profit = new Chart(document.getElementById('chartProfit'), {
+    type: 'bar', data: { labels: FY_LABELS, datasets: [
+      { label: 'EBITDA', data: R.ebitda, backgroundColor: C.green },
+      { label: 'Net Income', data: R.netIncome, backgroundColor: C.blue },
+    ]}, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: 'T EUR' } } } }
+  });
+
+  charts.cash = new Chart(document.getElementById('chartCash'), {
+    type: 'line', data: { labels: FY_LABELS, datasets: [
+      { label: 'Cash Balance', data: R.cashBalance, borderColor: C.green, backgroundColor: C.greenL, fill: true, tension: 0.3 },
+      { label: 'Cash from Ops', data: R.cashOps, borderColor: C.blue, backgroundColor: C.blueL, fill: false, tension: 0.3 },
+    ]}, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: 'T EUR' } } } }
+  });
+
+  charts.margins = new Chart(document.getElementById('chartMargins'), {
+    type: 'line', data: { labels: FY_LABELS, datasets: [
+      { label: 'Gross Margin', data: R.grossMargin.map(v => v*100), borderColor: C.green, tension: 0.3 },
+      { label: 'EBITDA Margin', data: R.ebitdaMargin.map(v => v*100), borderColor: C.blue, tension: 0.3 },
+      { label: 'Net Margin', data: R.netMargin.map(v => v*100), borderColor: C.orange, tension: 0.3 },
+    ]}, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: '%' } } } }
+  });
+
+  // Farm Ops per-farm revenue
+  const farmDatasets = R.farmDetails.map((d, idx) => {
+    const colors = [C.purple, C.blue, C.green, C.accent, C.orange, C.red];
+    return { label: d.name, data: d.revByYear, backgroundColor: colors[idx % colors.length] };
+  });
+  charts.farmOps = new Chart(document.getElementById('chartFarmOps'), {
+    type: 'bar', data: { labels: FY_LABELS, datasets: farmDatasets.length > 0 ? farmDatasets : [{ label: 'No farms', data: [0,0,0,0,0,0,0], backgroundColor: '#ccc' }] },
+    options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { x: { stacked: true }, y: { stacked: true, title: { display: true, text: 'T EUR' } } } }
+  });
+
+  charts.scenario = new Chart(document.getElementById('chartScenario'), {
+    type: 'bar', data: { labels: FY_LABELS, datasets: [
+      { label: 'Base', data: base.ebitda, backgroundColor: C.green },
+      { label: 'Bull', data: bull.ebitda, backgroundColor: C.blue },
+      { label: 'Bear', data: bear.ebitda, backgroundColor: C.red },
+    ]}, options: { responsive: true, plugins: { legend: { position: 'top' } }, scales: { y: { title: { display: true, text: 'T EUR' } } } }
+  });
+}
+
+// ============================================================
+// MAIN RECALCULATE
+// ============================================================
+function recalculate() {
+  const inp = getGmbHInputs();
+  const mult = inp.scenarioMult[inp.scenario];
+  const R = calculateScenario(inp, mult);
+  lastResult = R;
+
+  const base = calculateScenario(inp, inp.scenarioMult.base);
+  const bull = calculateScenario(inp, inp.scenarioMult.bull);
+  const bear = calculateScenario(inp, inp.scenarioMult.bear);
+
+  renderKPIs(R, inp.scenario);
+  renderPnL(R, inp.scenario);
+  renderCashFlow(R);
+  renderBalanceSheet(R);
+  renderScenarios(base, bull, bear);
+  renderValuation(R, inp);
+  renderFarmDetail(R);
+  renderPlantComparison();
+  renderCharts(R, base, bull, bear);
+
+  saveInputs();
+}
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if ((tabId === 'charts' || tabId === 'farmdetail') && lastResult) {
+    setTimeout(() => {
+      const inp = getGmbHInputs();
+      const base = calculateScenario(inp, inp.scenarioMult.base);
+      const bull = calculateScenario(inp, inp.scenarioMult.bull);
+      const bear = calculateScenario(inp, inp.scenarioMult.bear);
+      renderCharts(lastResult, base, bull, bear);
+    }, 50);
+  }
+}
+
+// ============================================================
+// PERSISTENCE & EXPORT
+// ============================================================
+const STORAGE_KEY = 'orbifarm_integrated_inputs_v4';
+
+function saveInputs() {
+  const data = { farms: ownFarms, farmIdCounter };
+  const ids = ['scenario',
+    'licenseFee','maintRate',
+    'hwCostRate','discountRate','royaltyRate','maintCostRate',
+    'opexAccounting','opexConsulting','opexInsurance','opexProdDev','opexPatents',
+    'opexMarketing','opexComm','opexOffice','opexTravel','opexOther',
+    'persFY26','persFY27','persFY28','persFY29','persFY30','persFY31','persFY32',
+    'socialRate','fundSeed','fundSeriesA','fundSeriesB',
+    'wacc','termGrowth','exitMultiple','taxRate'];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) data[id] = el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadInputs() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.entries(data).forEach(([k, v]) => {
+      if (k === 'farms' || k === 'farmIdCounter') return;
+      const el = document.getElementById(k);
+      if (el) el.value = v;
+    });
+    if (data.farms) { ownFarms = data.farms; farmIdCounter = data.farmIdCounter || ownFarms.length; renderFarmCards(); }
+  } catch(e) {}
+}
+
+function resetDefaults() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  ownFarms = [];
+  farmIdCounter = 0;
+  location.reload();
+}
+
+function exportCSV() {
+  if (!lastResult) return;
+  const R = lastResult;
+  let csv = 'Metric,' + FY_LABELS.join(',') + ',TOTAL\n';
+  const sum = arr => arr.reduce((a,b) => a+b, 0);
+  const rows = [
+    ['Total Revenue', ...R.totalRevenue, sum(R.totalRevenue)],
+    ['Construction Revenue', ...R.totalHwRev, sum(R.totalHwRev)],
+    ['Maintenance Revenue', ...R.maintRev, sum(R.maintRev)],
+    ['Licensing Revenue', ...R.licensingRev, sum(R.licensingRev)],
+    ['Farm Ops Revenue', ...R.farmOpsRev, sum(R.farmOpsRev)],
+    ['Total COGS', ...R.totalCOGS, sum(R.totalCOGS)],
+    ['Gross Profit', ...R.grossProfit, sum(R.grossProfit)],
+    ['Total OpEx', ...R.totalOpex, sum(R.totalOpex)],
+    ['EBITDA', ...R.ebitda, sum(R.ebitda)],
+    ['D&A', ...R.totalDA, sum(R.totalDA)],
+    ['EBIT', ...R.ebit, sum(R.ebit)],
+    ['Net Income', ...R.netIncome, sum(R.netIncome)],
+    ['Cash Balance', ...R.cashBalance, R.cashBalance[6]],
+    ['Farm Ops EBITDA', ...R.farmOpsEbitda, sum(R.farmOpsEbitda)],
+  ];
+  rows.forEach(r => csv += r.map(v => typeof v === 'number' ? v.toFixed(1) : v).join(',') + '\n');
+
+  // Farm details
+  csv += '\nFarm Details\n';
+  csv += 'Farm,Plant,Start,Operational,Share%,CapEx,Revenue/yr,EBITDA/yr,ROI\n';
+  R.farmDetails.forEach(d => {
+    csv += [d.name, d.plant, d.startYear, d.opStart ? d.opStart.toFixed(1) : '-', d.share, (d.totalCapex/1000).toFixed(0), (d.totalRevenue/1000).toFixed(0), (d.ebitda/1000).toFixed(0), (d.roi*100).toFixed(1)+'%'].join(',') + '\n';
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'OrbiFarm_Integrated_Model.csv';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  loadInputs();
+  // Add a default farm if none exist (first-time experience)
+  if (ownFarms.length === 0) {
+    const defaultPlant = 'Matcha (Camellia sinensis)';
+    const id = ++farmIdCounter;
+    ownFarms.push({ id, name: 'Farm 1 – Matcha', startYear: 2026, buildTime: 12, plant: defaultPlant, share: 51, params: {...PLANTS[defaultPlant]} });
+    renderFarmCards();
+  }
+  recalculate();
+});
+// checkPassword defined in the auth script below
+</script>
+</div><!-- /app-content -->
+
+<script>
+// Password protection
+const PW_HASH = '7b0ab8c490f2d8f4917564918fedac54262af74ccafdcda33e3b50b5bf95dbd1';
+const SESSION_KEY = 'orbifarm_integrated_auth';
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPassword() {
+  const input = document.getElementById('pw-input');
+  const hash = await sha256(input.value);
+  if (hash === PW_HASH) {
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    unlockApp();
+  } else {
+    input.classList.add('pw-error');
+    document.getElementById('pw-error-msg').style.display = 'block';
+    setTimeout(() => input.classList.remove('pw-error'), 400);
+    input.value = '';
+    input.focus();
+  }
+}
+
+function unlockApp() {
+  document.getElementById('pw-overlay').style.display = 'none';
+  document.getElementById('app-content').classList.remove('app-hidden');
+  recalculate();
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+if (sessionStorage.getItem(SESSION_KEY) === 'true') unlockApp();
+</script>
+</body>
+</html>
