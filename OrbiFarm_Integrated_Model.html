@@ -197,6 +197,36 @@ table.data tr.total td { font-weight: 700; background: #e8f5e9; border-top: 2px 
           <option value="bear">Bear Case</option>
         </select>
       </div>
+      <div style="font-size:9px;color:#888;margin:6px 0 4px 0;border-top:1px dashed #ddd;padding-top:6px;">Scenario Multipliers (Base = 1.0)</div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;font-size:10px;border-collapse:collapse;">
+          <tr style="background:#f0f4f3;">
+            <th style="text-align:left;padding:3px;font-size:9px;">Multiplier</th>
+            <th style="padding:3px;font-size:9px;">Bull</th>
+            <th style="padding:3px;font-size:9px;">Bear</th>
+          </tr>
+          <tr>
+            <td style="padding:3px;font-size:10px;">Growth</td>
+            <td><input id="bull_growth" type="number" value="1.2" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+            <td><input id="bear_growth" type="number" value="0.8" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+          </tr>
+          <tr>
+            <td style="padding:3px;font-size:10px;">Price</td>
+            <td><input id="bull_price" type="number" value="1.1" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+            <td><input id="bear_price" type="number" value="0.9" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+          </tr>
+          <tr>
+            <td style="padding:3px;font-size:10px;">COGS</td>
+            <td><input id="bull_cogs" type="number" value="0.95" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+            <td><input id="bear_cogs" type="number" value="1.05" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+          </tr>
+          <tr>
+            <td style="padding:3px;font-size:10px;">OpEx</td>
+            <td><input id="bull_opex" type="number" value="0.9" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+            <td><input id="bear_opex" type="number" value="1.1" step="0.05" min="0" style="width:55px;text-align:center;font-size:10px;" onchange="recalculate()"></td>
+          </tr>
+        </table>
+      </div>
     </div>
 
     <!-- Pricing -->
@@ -784,8 +814,8 @@ function getGmbHInputs() {
   const scenario = document.getElementById('scenario').value;
   const scenarioMult = {
     base: { growth: 1, price: 1, cogs: 1, opex: 1 },
-    bull: { growth: 1.2, price: 1.1, cogs: 0.95, opex: 0.9 },
-    bear: { growth: 0.8, price: 0.9, cogs: 1.05, opex: 1.1 }
+    bull: { growth: val('bull_growth'), price: val('bull_price'), cogs: val('bull_cogs'), opex: val('bull_opex') },
+    bear: { growth: val('bear_growth'), price: val('bear_price'), cogs: val('bear_cogs'), opex: val('bear_opex') }
   };
   const valuation = { wacc: val('wacc') / 100, termGrowth: val('termGrowth') / 100, exitMultiple: val('exitMultiple'), taxRate: val('taxRate') / 100 };
 
@@ -1407,6 +1437,8 @@ const STORAGE_KEY = 'orbifarm_integrated_inputs_v4';
 function saveInputs() {
   const data = { farms: ownFarms, farmIdCounter };
   const ids = ['scenario',
+    'bull_growth','bull_price','bull_cogs','bull_opex',
+    'bear_growth','bear_price','bear_cogs','bear_opex',
     'licenseFee','maintRate',
     'hwCostRate','discountRate','royaltyRate','maintCostRate',
     'opexAccounting','opexConsulting','opexInsurance','opexProdDev','opexPatents',
