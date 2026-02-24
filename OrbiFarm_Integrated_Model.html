@@ -348,7 +348,7 @@ const PLANTS = {
     category: "Pharma", productName: "Matcha",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 600, capexAddon: 500000,
-    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 69, energyOverhead: 1.2,
     yield: 4.5, productFraction: 0.85, sidestreamMass: 3000,
     nutrientCost: 0.3, processingCost: 2,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -360,7 +360,7 @@ const PLANTS = {
     category: "Pharma", productName: "Flowers (GMP)",
     modules: 1, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 6000, capexAddon: 500000,
-    electricityPrice: 0.07, lightingEnergy: 1.8, energyOverhead: 1.0,
+    electricityPrice: 0.07, lightingHours: 18, lightingIntensity: 100, energyOverhead: 1.0,
     yield: 6.89, productFraction: 0.5, sidestreamMass: 0,
     nutrientCost: 1.9, processingCost: 5.5,
     personnel: 600000, maintenance: 0, rent: 5, otherOpex: 150000, licenseFee: 10,
@@ -372,7 +372,7 @@ const PLANTS = {
     category: "Pharma", productName: "Dry Extract (std.)",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 400, capexAddon: 200000,
-    electricityPrice: 0.07, lightingEnergy: 1.32, energyOverhead: 1.0,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 83, energyOverhead: 1.0,
     yield: 0.834, productFraction: 0.3393, sidestreamMass: 0,
     nutrientCost: 14.74, processingCost: 12.5,
     personnel: 158581, maintenance: 0.9, rent: 5, otherOpex: 199258, licenseFee: 10,
@@ -384,7 +384,7 @@ const PLANTS = {
     category: "Food", productName: "TVP",
     modules: 10, loops: 30, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 300, capexAddon: 2000000,
-    electricityPrice: 0.07, lightingEnergy: 1.54, energyOverhead: 1.0,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 96, energyOverhead: 1.0,
     yield: 30.42, productFraction: 0.27, sidestreamMass: 0,
     nutrientCost: 0, processingCost: 0,
     personnel: 238613, maintenance: 0, rent: 5, otherOpex: 150000, licenseFee: 10,
@@ -396,7 +396,7 @@ const PLANTS = {
     category: "Food", productName: "Saffron (Pharma-Grade)",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 400, capexAddon: 200000,
-    electricityPrice: 0.07, lightingEnergy: 0.6, energyOverhead: 1.3,
+    electricityPrice: 0.07, lightingHours: 12, lightingIntensity: 50, energyOverhead: 1.3,
     yield: 1.414, productFraction: 1.0, sidestreamMass: 0,
     nutrientCost: 50, processingCost: 150,
     personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -408,7 +408,7 @@ const PLANTS = {
     category: "Pharma", productName: "Artemisinin Extract",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 450, capexAddon: 600000,
-    electricityPrice: 0.07, lightingEnergy: 1.2, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 75, energyOverhead: 1.2,
     yield: 5, productFraction: 0.15, sidestreamMass: 40000,
     nutrientCost: 0.5, processingCost: 15,
     personnel: 160000, maintenance: 0.75, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -420,7 +420,7 @@ const PLANTS = {
     category: "Pharma", productName: "Centella Extract (cosmetic-grade)",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 450, capexAddon: 380000,
-    electricityPrice: 0.07, lightingEnergy: 0.8, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 50, energyOverhead: 1.2,
     yield: 8, productFraction: 0.8, sidestreamMass: 10000,
     nutrientCost: 0.2, processingCost: 3,
     personnel: 180000, maintenance: 0.75, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -432,7 +432,7 @@ const PLANTS = {
     category: "Pharma", productName: "Pharma Biomass (FW)",
     modules: 2, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 7000, capexAddon: 800000,
-    electricityPrice: 0.07, lightingEnergy: 19.73, energyOverhead: 1.0,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 1233, energyOverhead: 1.0,
     yield: 30, productFraction: 1, sidestreamMass: 0,
     nutrientCost: 0, processingCost: 1.26,
     personnel: 450000, maintenance: 0, rent: 8, otherOpex: 350000, licenseFee: 10,
@@ -444,7 +444,7 @@ const PLANTS = {
     category: "Pharma", productName: "Andrographolide Extract",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 300000,
-    electricityPrice: 0.07, lightingEnergy: 1.4, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 88, energyOverhead: 1.2,
     yield: 3.5, productFraction: 0.3, sidestreamMass: 2000,
     nutrientCost: 0.5, processingCost: 3,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -456,7 +456,7 @@ const PLANTS = {
     category: "Pharma", productName: "Echinacea Herba/Radix Extract",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 400000,
-    electricityPrice: 0.07, lightingEnergy: 1.2, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 75, energyOverhead: 1.2,
     yield: 5, productFraction: 0.6, sidestreamMass: 4000,
     nutrientCost: 0.4, processingCost: 2.5,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -468,7 +468,7 @@ const PLANTS = {
     category: "Pharma", productName: "Glycyrrhizin / Glycyrrhetinic Acid",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 400000,
-    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 63, energyOverhead: 1.2,
     yield: 6, productFraction: 0.5, sidestreamMass: 5000,
     nutrientCost: 0.3, processingCost: 2,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -480,7 +480,7 @@ const PLANTS = {
     category: "Pharma", productName: "Tanshinone/Salvianolic Acid Extract",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 500000,
-    electricityPrice: 0.07, lightingEnergy: 1.3, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 81, energyOverhead: 1.2,
     yield: 3.5, productFraction: 0.25, sidestreamMass: 4000,
     nutrientCost: 0.8, processingCost: 5,
     personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -492,7 +492,7 @@ const PLANTS = {
     category: "Pharma", productName: "Baicalin/Baicalein Extract",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 400000,
-    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 69, energyOverhead: 1.2,
     yield: 4, productFraction: 0.4, sidestreamMass: 3000,
     nutrientCost: 0.5, processingCost: 3,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -504,7 +504,7 @@ const PLANTS = {
     category: "Pharma", productName: "Vinblastine/Vincristine Extract",
     modules: 5, loops: 10, reserveLoops: 1, loopHeight: 12, loopWidth: 2.58,
     capexPerM2: 600, capexAddon: 500000,
-    electricityPrice: 0.07, lightingEnergy: 1.4, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 88, energyOverhead: 1.2,
     yield: 2.8, productFraction: 0.15, sidestreamMass: 5000,
     nutrientCost: 1, processingCost: 8,
     personnel: 250000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -516,7 +516,7 @@ const PLANTS = {
     category: "Pharma", productName: "Chamomile Extract",
     modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 900, capexAddon: 1150000,
-    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.15,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 56, energyOverhead: 1.15,
     yield: 7.68, productFraction: 0.108, sidestreamMass: 0,
     nutrientCost: 4.63, processingCost: 31.3,
     personnel: 420000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
@@ -528,7 +528,7 @@ const PLANTS = {
     category: "Food", productName: "Stevia Glycoside Extract",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 500, capexAddon: 400000,
-    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 63, energyOverhead: 1.2,
     yield: 3.5, productFraction: 0.6, sidestreamMass: 5000,
     nutrientCost: 0.25, processingCost: 5,
     personnel: 200000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -540,7 +540,7 @@ const PLANTS = {
     category: "Pharma", productName: "Dried Tulsi Herb",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 450, capexAddon: 350000,
-    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 56, energyOverhead: 1.2,
     yield: 5, productFraction: 0.9, sidestreamMass: 8000,
     nutrientCost: 0.2, processingCost: 1.5,
     personnel: 180000, maintenance: 5, rent: 5, otherOpex: 0, licenseFee: 10,
@@ -552,7 +552,7 @@ const PLANTS = {
     category: "Food", productName: "Hop Pellets / CO2 Extract",
     modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 900, capexAddon: 1150000,
-    electricityPrice: 0.07, lightingEnergy: 0.95, energyOverhead: 1.12,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 59, energyOverhead: 1.12,
     yield: 6, productFraction: 0.55, sidestreamMass: 0,
     nutrientCost: 0.55, processingCost: 1.3,
     personnel: 420000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
@@ -564,7 +564,7 @@ const PLANTS = {
     category: "Pharma", productName: "PEITC-enriched Extract",
     modules: 10, loops: 20, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 450, capexAddon: 1100000,
-    electricityPrice: 0.07, lightingEnergy: 0.8, energyOverhead: 1.15,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 50, energyOverhead: 1.15,
     yield: 3.5, productFraction: 0.2, sidestreamMass: 14140,
     nutrientCost: 3, processingCost: 22,
     personnel: 360000, maintenance: 0.75, rent: 9, otherOpex: 0, licenseFee: 10,
@@ -576,7 +576,7 @@ const PLANTS = {
     category: "Pharma", productName: "Root Extract (Taraxasterol)",
     modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 900, capexAddon: 850000,
-    electricityPrice: 0.07, lightingEnergy: 1.0, energyOverhead: 1.15,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 63, energyOverhead: 1.15,
     yield: 8.5, productFraction: 0.08, sidestreamMass: 24240,
     nutrientCost: 3.8, processingCost: 22,
     personnel: 380000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
@@ -588,7 +588,7 @@ const PLANTS = {
     category: "Pharma", productName: "beta-Sitosterol Root Extract",
     modules: 5, loops: 10, reserveLoops: 0, loopHeight: 12, loopWidth: 4,
     capexPerM2: 900, capexAddon: 1100000,
-    electricityPrice: 0.07, lightingEnergy: 1.1, energyOverhead: 1.15,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 69, energyOverhead: 1.15,
     yield: 9.5, productFraction: 0.2, sidestreamMass: 22700,
     nutrientCost: 3.5, processingCost: 25,
     personnel: 380000, maintenance: 0, rent: 9, otherOpex: 0, licenseFee: 5.5,
@@ -600,7 +600,7 @@ const PLANTS = {
     category: "Food", productName: "Organic Wheatgrass Powder",
     modules: 10, loops: 20, reserveLoops: 1, loopHeight: 12, loopWidth: 4,
     capexPerM2: 350, capexAddon: 1000000,
-    electricityPrice: 0.07, lightingEnergy: 0.9, energyOverhead: 1.2,
+    electricityPrice: 0.07, lightingHours: 16, lightingIntensity: 56, energyOverhead: 1.2,
     yield: 20, productFraction: 0.85, sidestreamMass: 40000,
     nutrientCost: 0.4, processingCost: 1.5,
     personnel: 200000, maintenance: 5, rent: 5, otherOpex: 80000, licenseFee: 10,
@@ -622,7 +622,7 @@ function ival(id) { return parseInt(document.getElementById(id).value) || 0; }
 // FARM OPERATIONS UI
 // ============================================================
 const PLANT_PARAMS = ['modules','loops','reserveLoops','loopHeight','loopWidth','auxFactor',
-  'capexPerM2','capexAddon','electricityPrice','lightingEnergy','energyOverhead',
+  'capexPerM2','capexAddon','electricityPrice','lightingHours','lightingIntensity','energyOverhead',
   'yield','productFraction','sidestreamMass','nutrientCost','processingCost',
   'personnel','maintenance','rent','otherOpex','licenseFee',
   'productPrice','sidestreamRevenue','co2Factor','co2Price','depreciation'];
@@ -670,7 +670,11 @@ function onFarmFieldChange(id, field) {
   else if (field === 'startYear') { farm.startYear = parseInt(el.value) || 2026; }
   else if (field === 'buildTime') { farm.buildTime = parseInt(el.value) || 12; }
   else if (field === 'share') { farm.share = parseFloat(el.value) || 0; }
-  else { farm.params[field] = parseFloat(el.value) || 0; }
+  else {
+    let v = parseFloat(el.value) || 0;
+    if (field === 'loopWidth') v = Math.min(v, 4);
+    farm.params[field] = v;
+  }
   recalculate();
 }
 
@@ -724,18 +728,23 @@ function renderFarmCards() {
         </div>
       </div>
       <div class="farm-summary">
-        <strong>EBITDA:</strong> ${fmtEurShort(unit.ebitda)} /yr &middot;
+        <strong>Productive Area:</strong> ${unit.productiveArea.toLocaleString()} m&sup2; &middot;
+        <strong>Floor Space:</strong> ${Math.round(unit.floorSpace).toLocaleString()} m&sup2; &middot;
         <strong>CapEx:</strong> ${fmtEurShort(unit.totalCapex)} &middot;
+        <strong>EBITDA:</strong> ${fmtEurShort(unit.ebitda)} /yr &middot;
         <strong>Share EBITDA:</strong> ${fmtEurShort(unit.ebitda * f.share / 100)} /yr &middot;
         <strong>ROI:</strong> ${unit.totalCapex > 0 ? (unit.ebitda / unit.totalCapex * 100).toFixed(1) : 0}%
       </div>
       <span class="farm-detail-toggle" onclick="toggleFarmDetails(${f.id})">&#x25BC; Show / hide parameters</span>
       <div id="farmdetails_${f.id}" class="farm-details">
         <div class="detail-grid">
-          ${PLANT_PARAMS.map(k => `<div class="mini-field">
-            <label>${k}</label>
-            <input type="number" id="fp_${k}_${f.id}" value="${f.params[k]}" step="any" onchange="onFarmFieldChange(${f.id},'${k}')">
-          </div>`).join('')}
+          ${PLANT_PARAMS.map(k => {
+            const labels = {modules:'Modules',loops:'Loops',reserveLoops:'Reserve Loops',loopHeight:'Loop Height (m)',loopWidth:'Loop Width (m, max 4)',auxFactor:'Aux Factor',capexPerM2:'CapEx/m\u00B2',capexAddon:'CapEx Addon (\u20AC)',electricityPrice:'Electricity (\u20AC/kWh)',lightingHours:'Lighting (h/day)',lightingIntensity:'Light Intensity (W/m\u00B2)',energyOverhead:'Energy Overhead',yield:'Yield (kg/m\u00B2/harvest)',productFraction:'Product Fraction',sidestreamMass:'Sidestream Mass (kg)',nutrientCost:'Nutrient Cost (\u20AC/kg)',processingCost:'Processing Cost (\u20AC/kg)',personnel:'Personnel (\u20AC/yr)',maintenance:'Maintenance (%CapEx)',rent:'Rent (\u20AC/m\u00B2/mo)',otherOpex:'Other OpEx (\u20AC/yr)',licenseFee:'License Fee (%Rev)',productPrice:'Product Price (\u20AC/kg)',sidestreamRevenue:'Sidestream Rev (\u20AC/yr)',co2Factor:'CO\u2082 Factor',co2Price:'CO\u2082 Price (\u20AC/t)',depreciation:'Depreciation (yr)'};
+            const maxAttr = k === 'loopWidth' ? ' max="4"' : '';
+            return `<div class="mini-field">
+            <label>${labels[k] || k}</label>
+            <input type="number" id="fp_${k}_${f.id}" value="${f.params[k]}" step="any"${maxAttr} onchange="onFarmFieldChange(${f.id},'${k}')">
+          </div>`;}).join('')}
         </div>
       </div>
     </div>`;
@@ -760,10 +769,12 @@ function calculateFarmUnit(params) {
   const areaPerLoop = calcAreaPerLoop(p.loopHeight || 12, p.loopWidth || 4);
   const productiveArea = (p.modules || 0) * (p.loops || 0) * areaPerLoop;
   const capexArea = (p.modules || 0) * ((p.loops || 0) + (p.reserveLoops || 0)) * areaPerLoop;
-  const floorSpace = (p.modules || 0) * ((p.loops || 0) + (p.reserveLoops || 0)) * 10 * (p.auxFactor || 1.4);
+  const loopFootprint = (p.loopWidth || 4) * 2.5;  // loopWidth × 2.5m depth per loop
+  const floorSpace = (p.modules || 0) * ((p.loops || 0) + (p.reserveLoops || 0)) * loopFootprint * (p.auxFactor || 1.4);
   const totalCapex = capexArea * (p.capexPerM2 || 0) + (p.capexAddon || 0);
 
-  const annualEnergy = productiveArea * (p.lightingEnergy || 0) * (p.energyOverhead || 1) * 365;
+  const lightingKW = ((p.lightingIntensity || 0) / 1000) * (p.lightingHours || 0);  // kWh/sqm/day
+  const annualEnergy = productiveArea * lightingKW * (p.energyOverhead || 1) * 365;
   const annualEnergyCost = annualEnergy * (p.electricityPrice || 0);
   const annualBiomass = productiveArea * (p.yield || 0);
   const primaryOutput = annualBiomass * (p.productFraction || 0);
@@ -849,7 +860,7 @@ function calculateScenario(inp, mult) {
       startYear: farm.startYear, buildTime: farm.buildTime, opStart: opStartDecimal,
       totalCapex: unit.totalCapex, totalRevenue: unit.totalRevenue,
       totalOpex: unit.totalOpex, ebitda: unit.ebitda, ebit: unit.ebit,
-      productiveArea: unit.productiveArea,
+      productiveArea: unit.productiveArea, floorSpace: unit.floorSpace,
       roi: unit.roi, payback: unit.payback, ebitdaMargin: unit.ebitdaMargin,
       revByYear: [0,0,0,0,0,0,0], costsByYear: [0,0,0,0,0,0,0],
       capexByYear: [0,0,0,0,0,0,0], ebitdaByYear: [0,0,0,0,0,0,0]
@@ -1265,16 +1276,17 @@ function renderFarmDetail(R) {
     document.getElementById('farmdetail-table').innerHTML = '<p style="color:#888;font-size:13px;">No own farms configured. Add farms in the left panel.</p>';
     return;
   }
-  const h = ['Farm', 'Plant', 'Start', 'Op.', 'Share', 'Area sqm', 'CapEx (100%)', 'Rev/yr', 'OpEx/yr', 'EBITDA/yr', 'ROI', 'Payback', ...FY_LABELS.map(l => l + ' EBITDA')];
+  const h = ['Farm', 'Plant', 'Start', 'Op.', 'Share', 'Prod. Area m\u00B2', 'Floor m\u00B2', 'CapEx (100%)', 'Rev/yr', 'OpEx/yr', 'EBITDA/yr', 'ROI', 'Payback', ...FY_LABELS.map(l => l + ' EBITDA')];
   const rows = R.farmDetails.map(d => ({
     cells: [d.name, d.plant.substring(0, 20), d.startYear, d.opStart ? d.opStart.toFixed(1) : '-', d.share + '%',
-      fmt(d.productiveArea), fmt(d.totalCapex / 1000), fmt(d.totalRevenue / 1000), fmt(d.totalOpex / 1000),
+      fmt(d.productiveArea), fmt(Math.round(d.floorSpace)), fmt(d.totalCapex / 1000), fmt(d.totalRevenue / 1000), fmt(d.totalOpex / 1000),
       fmt(d.ebitda / 1000), fmtPct(d.roi), d.payback < 100 ? d.payback.toFixed(1) + 'y' : '-',
       ...d.ebitdaByYear.map(v => v)]
   }));
   // Totals row
   const totals = { cells: ['TOTAL (OrbiFarm Share)', '', '', '', '',
     fmt(R.farmDetails.reduce((a, d) => a + d.productiveArea, 0)),
+    fmt(Math.round(R.farmDetails.reduce((a, d) => a + d.floorSpace, 0))),
     '', fmt(R.farmDetails.reduce((a, d) => a + d.totalRevenue * d.share / 100 / 1000, 0)),
     '', '', '', '', ...R.farmOpsEbitda] };
   totals.cls = 'total';
@@ -1292,11 +1304,12 @@ function renderPlantComparison() {
   rows.sort((a, b) => b.ebitda - a.ebitda);
   let html = '<table class="comparison-table"><thead><tr>';
   html += '<th>Plant</th><th>Cat.</th><th>Product</th><th>Price EUR/kg</th>';
-  html += '<th>CapEx</th><th>Revenue/yr</th><th>EBITDA/yr</th><th>Margin</th><th>ROI</th><th>Payback</th>';
+  html += '<th>Prod. Area m&sup2;</th><th>Floor m&sup2;</th><th>CapEx</th><th>Revenue/yr</th><th>EBITDA/yr</th><th>Margin</th><th>ROI</th><th>Payback</th>';
   html += '</tr></thead><tbody>';
   rows.forEach(r => {
     html += `<tr>
       <td>${r.name}</td><td>${r.cat}</td><td>${r.product}</td><td>${fmt(r.price, 0)}</td>
+      <td>${r.productiveArea.toLocaleString()}</td><td>${Math.round(r.floorSpace).toLocaleString()}</td>
       <td>${fmtEurShort(r.totalCapex)}</td><td>${fmtEurShort(r.totalRevenue)}</td>
       <td style="color:${r.ebitda >= 0 ? '#155724' : '#721c24'}">${fmtEurShort(r.ebitda)}</td>
       <td>${fmtPct(r.ebitdaMargin)}</td><td>${fmtPct(r.roi)}</td>
@@ -1432,7 +1445,7 @@ function showTab(tabId, btn) {
 // ============================================================
 // PERSISTENCE & EXPORT
 // ============================================================
-const STORAGE_KEY = 'orbifarm_integrated_inputs_v4';
+const STORAGE_KEY = 'orbifarm_integrated_inputs_v5';
 
 function saveInputs() {
   const data = { farms: ownFarms, farmIdCounter };
@@ -1496,9 +1509,9 @@ function exportCSV() {
 
   // Farm details
   csv += '\nFarm Details\n';
-  csv += 'Farm,Plant,Start,Operational,Share%,CapEx,Revenue/yr,EBITDA/yr,ROI\n';
+  csv += 'Farm,Plant,Start,Operational,Share%,Prod Area m2,Floor m2,CapEx,Revenue/yr,EBITDA/yr,ROI\n';
   R.farmDetails.forEach(d => {
-    csv += [d.name, d.plant, d.startYear, d.opStart ? d.opStart.toFixed(1) : '-', d.share, (d.totalCapex/1000).toFixed(0), (d.totalRevenue/1000).toFixed(0), (d.ebitda/1000).toFixed(0), (d.roi*100).toFixed(1)+'%'].join(',') + '\n';
+    csv += [d.name, d.plant, d.startYear, d.opStart ? d.opStart.toFixed(1) : '-', d.share, d.productiveArea, Math.round(d.floorSpace), (d.totalCapex/1000).toFixed(0), (d.totalRevenue/1000).toFixed(0), (d.ebitda/1000).toFixed(0), (d.roi*100).toFixed(1)+'%'].join(',') + '\n';
   });
 
   const blob = new Blob([csv], { type: 'text/csv' });
